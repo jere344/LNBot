@@ -47,3 +47,31 @@ async def check_which(ctx: Context, novels_found: tuple):
         return
 
     return novels_found[reaction_list.index(reaction.emoji)]
+
+
+class placeholderMessage:
+    async def send(self, message):
+        print(message)
+
+    async def edit(self, content):
+        print(content)
+
+
+async def send(ctx, message, argument):
+    if argument["console"]:
+        print(message)
+        return placeholderMessage()
+    elif argument["f"]:
+        return placeholderMessage()
+    else:
+        return await ctx.send(message)
+
+
+async def edit(message, content, argument):
+    if argument["console"]:
+        print(content)
+        return message
+    elif argument["f"]:
+        return message
+    else:
+        return await message.edit(content=content)
