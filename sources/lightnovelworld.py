@@ -6,14 +6,15 @@ import re
 
 import json
 import os
+
 import epubgenerator
 
 
 def Search(novel):
     headers = {
-        "User-Agent": "Mozilla",
-        "LNRequestVerifyToken": "CfDJ8MVM-CSaaEdCppBBbxyBpd00ZSIZbqOnci8HzkzAnmePwLiORFaKaw2UD1yTM89IIh3vi3v3euUMI8hryEqd6iJoMth9JJf_mFuyhmnGhsp8hFTn1qfezXnGsbD5-xn39Lw02gLuOdr7s03VyOpYsg8",
-        "Cookie": "lncoreantifrg=CfDJ8MVM-CSaaEdCppBBbxyBpd2kJ0C5BfUpfmlq8yZI0x3H5EK5j__c1ph1E6Q8RwU3Mk4zqcwoMTEQeRpnA7gv3SnYAYlPX-mdT2rwbAAUg-g5MhU2_RAWQCMhVqxaGXeNjYEqmB_JdrtiFez-o85eIqc",
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0",
+        "LNRequestVerifyToken": "CfDJ8FmyhIN_ipxGu0PT0IWOxoldnG4djOtaZJnJ8JJ4ZgmS7tya4ZXsRdxbpLUhpf5ykKL1y_WtHwvLXP0TCl9Y8w8hg23Z7MzggZukZ_vxL34Q1kLrcbBulece6IbgCzpgLFi5sF3wd53-5flUh-SBIQg",
+        "Cookie": "euconsent-v2=CPVrlMSPVrlMSAKAnAENCGCsAP_AAH_AACaIIpNd_X__bX9j-_5_f_t0eY1P9_r3v-QzjhfNt-8F3L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzHsak2cpyNKJ7LEmnMZO2dYGHtPn9lDuYKY7_5___fz3j-v_t_-39T378X_3_d5_2---vCfV599jLv9____39nP___9v-_8______8EUgCTDUvIAuzLHBk2jSqFECMKwkKgFABRQDC0RWADg4KdlYBPqCFgAgFSEYEQIMQUYMAgAEEgCQiICQAsEAiAIgEAAIAUYCEABEwCCwAsDAIABQDQsQAoABAkIMjgqOUwICpFooJbKxBKCvY0wgDLPAigURkVAAiSaAFgZCQsHMcASAl4skDTFC-QAiAA.dgAACFgAAAAA; addtl_consent=1~39.4.3.9.6.9.13.6.4.15.9.5.2.7.4.1.7.1.3.2.10.3.5.4.21.4.6.9.7.10.2.9.2.18.7.6.14.5.20.6.5.1.3.1.11.29.4.14.4.5.3.10.6.2.9.6.6.4.5.4.4.29.4.5.3.1.6.2.2.17.1.17.10.9.1.8.6.2.8.3.4.142.4.8.35.7.15.1.14.3.1.8.10.25.3.7.25.5.18.9.7.41.2.4.18.21.3.4.2.1.6.6.5.2.14.18.7.3.2.2.8.20.8.8.6.3.10.4.20.2.13.4.6.4.11.1.3.22.16.2.6.8.2.4.11.6.5.33.11.8.1.10.28.12.1.3.21.2.7.6.1.9.30.17.4.9.15.8.7.3.6.6.7.2.4.1.7.12.13.22.13.2.12.2.10.1.4.15.2.4.9.4.5.4.7.13.5.15.4.13.4.14.8.2.15.2.5.5.1.2.2.1.2.14.7.4.8.2.9.10.18.12.13.2.18.1.1.3.1.1.9.25.4.1.19.8.4.5.2.1.5.4.8.4.2.2.2.14.2.13.4.2.6.9.6.3.4.3.5.2.3.6.10.11.6.3.16.3.11.3.1.2.3.9.19.11.15.3.10.7.6.4.3.4.6.3.3.3.3.1.1.1.6.11.3.1.1.7.4.6.1.10.5.2.6.3.2.2.4.3.2.2.7.2.13.7.12.2.1.3.3.4.5.4.3.2.2.4.1.3.1.1.1.2.9.1.6.9.1.5.2.1.7.2.8.11.1.3.1.1.2.1.3.2.6.1.5.6.1.5.3.1.3.1.1.2.2.7.7.1.4.1.2.6.1.2.1.1.3.1.1.4.1.1.2.1.8.1.7.4.3.2.1.3.5.3.9.6.1.15.10.28.1.2.2.12.3.4.1.6.3.4.7.1.3.1.1.3.1.5.3.1.3.2.2.1.1.4.2.1.2.1.1.1.2.2.4.2.1.2.2.2.4.1.1.1.2.1.1.1.1.1.1.2.1.1.1.2.2.1.1.2.1.2.1.7.1.2.1.1.1.2.1.1.1.1.2.1.1.3.2.1.1.8.1.1.1.5.2.1.6.5.1.1.1.1.1.2.2.3.1.1.4.1.1.2.2.1.1.4.2.1.1.2.2.1.2.1.2.3.1.1.2.4.1.1.1.5.1.3.6.3.1.5.2.3.4.1.2.3.1.4.2.1.2.2.2.1.1.1.1.1.1.11.1.3.1.1.2.2.1.4.2.3.2.1.4.1.1.1.1.4.2.1.1.2.5.1.9.4.1.1.3.1.7.1.4.5.1.7.2.1.1.1.2.1.1.1.4.2.1.12.1.1.3.1.2.2.3.1.2.1.1.1.2.1.1.2.1.1.1.1.2.1.3.1.5.1.2.4.3.8.2.2.9.7.2.2.1.2.1; lncoreantifrg=CfDJ8MVM-CSaaEdCppBBbxyBpd2kJ0C5BfUpfmlq8yZI0x3H5EK5j__c1ph1E6Q8RwU3Mk4zqcwoMTEQeRpnA7gv3SnYAYlPX-mdT2rwbAAUg-g5MhU2_RAWQCMhVqxaGXeNjYEqmB_JdrtiFez-o85eIqc; googtrans=null; cf_clearance=UhUm0DxYtnjNhh_HAUMCJKfI_jKgE2TiflvN60O85Dg-1648115868-0-150",
     }
 
     response = requests.post(
@@ -21,6 +22,7 @@ def Search(novel):
         {"inputContent": novel},
         headers=headers,
     )
+    print(response)
     soup = BeautifulSoup(json.loads(response.content)["resultview"], features="lxml")
     novels_found = []
     for li in soup.find_all("li"):
