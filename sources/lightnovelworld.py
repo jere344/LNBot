@@ -6,7 +6,7 @@ import re
 
 import json
 import os
-
+from messages import *
 import epubgenerator
 
 headers = {
@@ -45,9 +45,7 @@ def Search(novel):
 
 
 async def Update(message, novel, latest_availible):
-    await message.edit(
-        content="Novel aldready downloaded, but an update was detected, downloading new chapters..."
-    )
+    await message.edit(content=UpdateDetected())
     download_path = f"novels/{novel}"
 
     with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
@@ -69,7 +67,7 @@ async def Update(message, novel, latest_availible):
         with open(path, "w", encoding="utf-8") as file:
             file.write(ScrapChapter(chapter_info))
 
-        await message.edit(content=f"{downloaded}/{to_download} chapters downloaded")
+        await message.edit(content=ChapterDownloaded(downloaded, to_download))
 
     metadata["chapterlist"] |= ch  # Merge the two dict
     metadata["latest"] = latest_availible
@@ -77,9 +75,9 @@ async def Update(message, novel, latest_availible):
     with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
-    await message.edit(content=f"Chapter list updated")
+    await message.edit(content=ChapterlistDownloaded())
 
-    await message.edit(content=f"Generating ebook...")
+    await message.edit(content=GeneratingEbook())
     os.remove(f"{download_path}/{epubgenerator.GetEbookFileName(metadata['title'])}")
     epubgenerator.Generate(novel)
 
@@ -95,7 +93,7 @@ async def DownloadNovel(message, novel):
             latest_downloaded = json.loads(file.read())["latest"]
 
         if latest_availible == latest_downloaded:
-            await message.edit(content="Novel aldready downloaded, sending...")
+            await message.edit(content=AldreadyDownloaded())
         else:
             await Update(message, novel, latest_availible)
 
@@ -109,11 +107,11 @@ async def DownloadNovel(message, novel):
     metadata["title"] = novel_title
 
     metadata["summary"] = ScrapSummary(novel)
-    await message.edit(content="Summary downloaded")
+    await message.edit(content=SummaryDownloaded())
     metadata["url"] = Url(novel)
     chapterlist = ScrapChapterList(novel)
     metadata["chapterlist"] = chapterlist
-    await message.edit(content="Chapter list downloaded")
+    await message.edit(content=ChapterlistDownloaded())
 
     with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
@@ -121,9 +119,9 @@ async def DownloadNovel(message, novel):
     pic_data, pic_format = ScrapPic(novel)
     with open(f"{download_path}/cover{pic_format}", "wb") as file:
         file.write(pic_data)
-    await message.edit(content="Cover downloaded")
+    await message.edit(content=CoverDownloaded())
 
-    await message.edit(content="Metadata downloaded")
+    await message.edit(content=MetadataDownloaded())
 
     os.mkdir(f"{download_path}/chapters")
     number_of_chapter = len(chapterlist)
@@ -133,11 +131,9 @@ async def DownloadNovel(message, novel):
         with open(path, "w", encoding="utf-8") as file:
             file.write(ScrapChapter(chapter_info))
 
-        await message.edit(
-            content=f"{chapter_id}/{number_of_chapter} chapters downloaded"
-        )
+        await message.edit(content=ChapterDownloaded(chapter_id, number_of_chapter))
 
-    await message.edit(content=f"downloaded, generating ebook")
+    await message.edit(content=GeneratingEbook())
     epubgenerator.Generate(novel)
 
 

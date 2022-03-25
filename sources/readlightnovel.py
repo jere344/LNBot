@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup, NavigableString
 import os
 import json
 import epubgenerator
+from messages import *
 
 header = {"X-Requested-With": "XMLHttpRequest"}
 
@@ -34,7 +35,7 @@ async def update(message, soup, metadata, novel, latest_release):
     for i, (nmb, chapter) in enumerate(new_chapterlist):
         if str(nmb) in metadata["chapterlist"]:
             continue
-        await message.edit(content=f"Chapter {i}/{nmb_chapter} downloaded")
+        await message.edit(content=ChapterDownloaded(i, nmb_chapter))
         download_chapter(novel, nmb, chapter)
 
     metadata["latest"] = latest_release
@@ -42,7 +43,7 @@ async def update(message, soup, metadata, novel, latest_release):
     with open(f"novels/{novel}/metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
-    await message.edit(content=f"downloaded, generating ebook")
+    await message.edit(content=GeneratingEbook())
     os.remove(f"novels/{novel}/{epubgenerator.GetEbookFileName(metadata['title'])}")
     epubgenerator.Generate(novel)
 
@@ -57,13 +58,13 @@ async def DownloadNovel(message, title, novel):
     latest_release = latest(soup)
 
     if os.path.isdir(download_path):
-        await message.edit(content="Novel aldready downloaded, checking for updates")
+        await message.edit(content=AldreadyDownloaded())
 
         with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
             metadata = json.loads(file.read())
 
         if latest_release != metadata["latest"]:
-            await message.edit(content="New chapters detected, downloading")
+            await message.edit(content=UpdateDetected())
             update(message, soup, metadata, novel, latest_release)
 
         return
@@ -75,26 +76,25 @@ async def DownloadNovel(message, title, novel):
     metadata["title"] = title
     metadata["url"] = url
     metadata["summary"] = summary(soup)
-    await message.edit(content="Summary downloaded")
+    await message.edit(content=SummaryDownloaded())
     metadata["latest"] = latest(soup)
 
     metadata["chapterlist"] = chapterlist(soup)
-    await message.edit(content="List of chapter downloaded")
+    await message.edit(content=ChapterlistDownloaded())
     cover(soup, novel)
-    await message.edit(content="Cover downloaded")
-    await message.edit(content="Metadata downloaded")
+    await message.edit(content=CoverDownloaded())
+    await message.edit(content=MetadataDownloaded())
 
     os.mkdir(f"{download_path}/chapters")
     number_of_chapter = len(metadata["chapterlist"])
     for i, (nmb, chapter) in enumerate(metadata["chapterlist"].items()):
         download_chapter(novel, nmb, chapter)
-        await message.edit(content=f"Chapter {i}/{number_of_chapter} downloaded")
+        await message.edit(content=ChapterDownloaded(i, number_of_chapter))
 
-    await message.edit(content="Chapters downloaded")
     with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
-    await message.edit(content=f"downloaded, generating ebook")
+    await message.edit(content=GeneratingEbook())
     epubgenerator.Generate(novel)
 
 

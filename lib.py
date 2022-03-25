@@ -4,6 +4,8 @@ from discord.ext import commands
 import json
 import inspect
 
+language = "FR"
+
 
 def save_json(location, content) -> None:
     with open(location, "w", encoding="utf-8") as file:
