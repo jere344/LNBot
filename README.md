@@ -49,8 +49,8 @@ You can try the bot right now using [this invitation](https://discord.com/oauth2
 
 > Exemple :
 
-https://i.imgur.com/PohOwii.png
-https://i.imgur.com/wFVsn7g.png
+![Imgur Image](https://i.imgur.com/PohOwii.png)
+![Imgur Image](https://i.imgur.com/wFVsn7g.png)
 (I will update the help command later to give actual novels)
 
 
