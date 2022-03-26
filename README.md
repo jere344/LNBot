@@ -57,6 +57,7 @@ Exemple :
 
 ## Installation
 
+- Clone the repo
 - Install [Requirements](#Requirements)
 - Create a "TOKEN" file next to main.py and paste your discord bot token here
 - Choose language, command prefix ... in config.py or keep defaults
