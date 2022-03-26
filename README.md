@@ -1,6 +1,6 @@
 # LNBot
 
-I am a beginner developper and it was made in a few days more like a learning project than an actual usable program. 
+I am a beginner developper and it was made in a few days more as a learning project than an actual usable program. 
 I do not guarantee the stability or security of this program.
 It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel-crawler/ instead.
 
