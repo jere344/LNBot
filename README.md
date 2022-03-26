@@ -20,7 +20,6 @@ It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel
 - [Installation](#installation)
 - [Requirements](#Requirements)
 - [Features](#features)
-- [license](#license)
 
 ---
 
@@ -75,12 +74,3 @@ Exemple :
 pip install discord.py
 pip install EbookLib
 ```
-
-
-
-## License
-
-There are no liscence, do whatever you want
-
-
-
