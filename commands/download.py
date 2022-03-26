@@ -5,10 +5,11 @@ import sources
 import _misc_ as misc
 import epubgenerator
 from messages import *
+from lnbotdecorator import LnBotDecorator
 
 
 @lib.bot.command()
-@lib.LnBotDecorator(help_message="Download novel")
+@LnBotDecorator(help_message="Download novel")
 async def download(ctx: Context, *novel):
     arguments = {
         "f": False,

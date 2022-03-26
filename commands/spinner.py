@@ -1,10 +1,11 @@
 import lib
 import discord.ext.commands.context as Context
 import time
+from lnbotdecorator import LnBotDecorator
 
 
 @lib.bot.command()
-@lib.LnBotDecorator(
+@LnBotDecorator(
     help_message="UwU",
 )
 async def spin(ctx: Context):

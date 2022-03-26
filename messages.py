@@ -1,4 +1,4 @@
-import lib
+import config
 
 
 class BaseMessage(str):
@@ -6,7 +6,7 @@ class BaseMessage(str):
         return str.__new__(cls)
 
     def __str__(self):
-        return self.__getattribute__(lib.language)
+        return self.__getattribute__(config.language)
 
     def __init__(self) -> str:
         return super().__init__()

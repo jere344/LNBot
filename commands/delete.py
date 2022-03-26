@@ -3,10 +3,11 @@ import discord.ext.commands.context as Context
 from sources import lightnovelworld
 import _misc_ as misc
 import os
+from lnbotdecorator import LnBotDecorator
 
 
 @lib.bot.command()
-@lib.LnBotDecorator()
+@LnBotDecorator()
 async def delete(ctx: Context, password: str, *novel):
     if password != "oursbrun":
         # I know storing password in clear stuck but good enough for my use

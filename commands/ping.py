@@ -1,10 +1,10 @@
 import lib
 import discord.ext.commands.context as Context
-import random
+from lnbotdecorator import LnBotDecorator
 
 
 @lib.bot.command()
-@lib.LnBotDecorator(
+@LnBotDecorator(
     help_message="Défit le bot au ping-pong. Vous allez perdre.",
 )
 async def ping(ctx: Context):
