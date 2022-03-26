@@ -39,7 +39,7 @@ async def download(ctx: Context, *novel):
         await misc.send(ctx, TooManyFound(), arguments)
         return
 
-    selected = await misc.check_which(ctx, novels_found)
+    selected = await misc.ask_which(ctx, novels_found)
     if not selected:
         return
 

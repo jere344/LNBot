@@ -19,7 +19,7 @@ reaction_list = [
 ]
 
 
-async def check_which(ctx: Context, novels_found: tuple):
+async def ask_which(ctx: Context, novels_found: tuple):
 
     # Ask user which novel to download : list all novel founds and place reactions
     novel_list_message = "\n".join(
