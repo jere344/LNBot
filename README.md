@@ -1,8 +1,9 @@
-# LNBot
-
 I am a beginner developper and it was made in a few days more as a learning project than an actual usable program. 
 I do not guarantee the stability or security of this program.
 It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel-crawler/ instead.
+
+
+# LNBot
 
 > A Discord bot to easily download ebook of your favorites web and light novel.
 
