@@ -5,9 +5,7 @@ from lnbotdecorator import LnBotDecorator
 
 
 @lib.bot.command()
-@LnBotDecorator(
-    help_message="UwU",
-)
+@LnBotDecorator(help_message="UwU", hidden=True)
 async def spin(ctx: Context):
     to_spin = "UwU"
     message = await ctx.send(to_spin[0])

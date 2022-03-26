@@ -9,7 +9,6 @@ import shutil
 @lib.bot.command()
 @LnBotDecorator()
 async def delete(ctx, password: str, *novel):
-    await ctx.message.delete()
     if not novel:
         return
 
