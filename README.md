@@ -1,8 +1,9 @@
-# LNBot
-
-I am a beginner developper and it was made in a few days more like a learning project than an actual usable program. 
+I am a beginner developper and it was made in a few days more as a learning project than an actual usable program. 
 I do not guarantee the stability or security of this program.
 It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel-crawler/ instead.
+
+
+# LNBot
 
 > A Discord bot to easily download ebook of your favorites web and light novel.
 
@@ -19,7 +20,6 @@ It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel
 - [Installation](#installation)
 - [Requirements](#Requirements)
 - [Features](#features)
-- [license](#license)
 
 ---
 
@@ -46,19 +46,21 @@ You can try the bot right now using [this invitation](https://discord.com/oauth2
 .help <?command>
 ```
 
-> Exemple :
+Exemple :
 
-https://i.imgur.com/PohOwii.png
-https://i.imgur.com/wFVsn7g.png
+![Imgur Image](https://i.imgur.com/PohOwii.png)
+![Imgur Image](https://i.imgur.com/wFVsn7g.png)
+
 (I will update the help command later to give actual novels)
 
 
 
 ## Installation
 
+- Clone the repo
 - Install [Requirements](#Requirements)
 - Create a "TOKEN" file next to main.py and paste your discord bot token here
-- Choose language, command prefix ... in config.py
+- Choose language, command prefix ... in config.py or keep defaults
 - Launch main.py
 
 
@@ -73,12 +75,3 @@ https://i.imgur.com/wFVsn7g.png
 pip install discord.py
 pip install EbookLib
 ```
-
-
-
-## License
-
-There are no liscence, do whatever you want
-
-
-
