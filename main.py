@@ -1,4 +1,10 @@
+import os
+
 if __name__ == "__main__":
+    if not os.path.isfile("TOKEN"):
+        open("TOKEN", "w").close()
+    if not os.path.isdir("novels"):
+        os.mkdir("novels")
 
     with open("TOKEN") as file:
         TOKEN = file.read()
@@ -10,11 +16,6 @@ if __name__ == "__main__":
             )
 
             sys.exit()
-
-    import os
-
-    if not os.path.isdir("novels"):
-        os.mkdir("novels")
 
     import lib
     import commands  # do not remove
