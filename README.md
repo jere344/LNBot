@@ -47,7 +47,7 @@ You can try the bot right now using [this invitation](https://discord.com/oauth2
 .help <?command>
 ```
 
-> Exemple :
+Exemple :
 
 ![Imgur Image](https://i.imgur.com/PohOwii.png)
 ![Imgur Image](https://i.imgur.com/wFVsn7g.png)
