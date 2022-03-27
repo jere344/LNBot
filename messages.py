@@ -2,6 +2,8 @@ import config
 
 
 class BaseMessage(str):
+    """Calling a class inheritting from BaseMessage return a string corressponding to the language selected in config.py"""
+
     def __new__(cls, *args, **kwargs):
         return str.__new__(cls)
 
