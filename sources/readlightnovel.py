@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup, NavigableString
 import os
 import json
-import epubgenerator
+import epub
 from messages import *
 
 header = {"X-Requested-With": "XMLHttpRequest"}
@@ -44,8 +44,8 @@ async def update(message, soup, metadata, novel, latest_release):
         json.dump(metadata, file)
 
     await message.edit(content=GeneratingEbook())
-    os.remove(f"novels/{novel}/{epubgenerator.GetEbookFileName(metadata['title'])}")
-    epubgenerator.Generate(novel)
+    os.remove(f"novels/{novel}/{epub.GetEbookFileName(metadata['title'])}")
+    epub.Generate(novel)
 
 
 async def DownloadNovel(message, title, novel):
@@ -95,7 +95,7 @@ async def DownloadNovel(message, title, novel):
         json.dump(metadata, file)
 
     await message.edit(content=GeneratingEbook())
-    epubgenerator.Generate(novel)
+    epub.Generate(novel)
 
 
 def latest(soup):

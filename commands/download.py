@@ -1,10 +1,9 @@
 import lib
-import discord
 import sources
 import _misc_ as misc
-import epubgenerator
 from messages import *
 from lnbotdecorator import LnBotDecorator
+import epub
 
 
 @lib.bot.command()
@@ -14,6 +13,7 @@ async def download(ctx, *novel):
         "v": config.v,
         "pdf": config.pdf,
         "console": config.console,
+        "epub": config.epub,
     }
 
     # Check if there are argument at the end (ex : .download lord of the mysteries -f -pdf)
@@ -53,8 +53,6 @@ async def download(ctx, *novel):
     await sources.DownloadNovel(message, user_readable_name, real_name, source)
 
     await misc.edit(message, NovelDownloaded(user_readable_name), arguments)
-    await ctx.send(
-        file=discord.File(
-            rf"novels/{real_name}/{epubgenerator.GetEbookFileName(user_readable_name)}"
-        )
-    )
+
+    if arguments["epub"]:
+        await epub.send_epub(ctx, real_name, user_readable_name)

@@ -69,8 +69,5 @@ async def send(ctx, message, argument):
 async def edit(message, content, argument):
     if argument["console"]:
         print(content)
-        return message
-    elif argument["f"]:
-        return message
-    else:
-        return await message.edit(content=content)
+
+    return await message.edit(content=content)

@@ -2,6 +2,7 @@ from ebooklib import epub
 import os
 import os.path
 import json
+import discord
 
 
 def GetEbookFileName(title):
@@ -9,6 +10,14 @@ def GetEbookFileName(title):
     for char in illegal:
         title.replace(char, " ")
     return f"{title}.epub"
+
+
+async def send_epub(ctx, real_name, user_readable_name):
+    await ctx.send(
+        file=discord.File(
+            rf"novels/{real_name}/{epub.GetEbookFileName(user_readable_name)}"
+        )
+    )
 
 
 def Generate(novel_real_name):
