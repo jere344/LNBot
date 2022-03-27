@@ -1,5 +1,4 @@
 import lib
-import discord.ext.commands.context as Context
 import discord
 import sources
 import _misc_ as misc
@@ -10,19 +9,25 @@ from lnbotdecorator import LnBotDecorator
 
 @lib.bot.command()
 @LnBotDecorator(help_message="Download novel")
-async def download(ctx: Context, *novel):
+async def download(ctx, *novel):
     arguments = {
-        "f": False,
-        "pdf": False,
-        "console": False,
+        "v": config.v,
+        "pdf": config.pdf,
+        "console": config.console,
     }
 
     # Check if there are argument at the end (ex : .download lord of the mysteries -f -pdf)
     # And change the argument dict depending of that
     for e in reversed(novel):
         if e.startswith("-"):
-            arguments[e[1:]] = True  # [1:] remove the "-"
-            novel = novel[:-1]  # Because the argument is not part of the novel name
+            arg = e[1:]
+            if arg in arguments:
+                # Not a common behaviour but the easiest one I found here
+                # Option do not set to enabled, but switch state
+                arguments[arg] = not arguments[arg]
+
+                # Remove argument from the novel name
+                novel = novel[:-1]
         else:
             break
 
@@ -34,7 +39,6 @@ async def download(ctx: Context, *novel):
     if not novels_found:
         await misc.send(ctx, NoNovelFound(), arguments)
         return
-
     if len(novels_found) > len(misc.reaction_list):
         await misc.send(ctx, TooManyFound(), arguments)
         return

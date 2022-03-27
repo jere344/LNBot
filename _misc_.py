@@ -60,11 +60,10 @@ class placeholderMessage:
 async def send(ctx, message, argument):
     if argument["console"]:
         print(message)
-        return placeholderMessage()
-    elif argument["f"]:
-        return placeholderMessage()
-    else:
+    if argument["v"]:
         return await ctx.send(message)
+
+    return placeholderMessage()
 
 
 async def edit(message, content, argument):
