@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup, NavigableString
 import os
 import json
-import epub
+import lnbotepub
 from messages import *
 
 header = {"X-Requested-With": "XMLHttpRequest"}
@@ -44,8 +44,8 @@ async def update(message, soup, metadata, novel, latest_release):
         json.dump(metadata, file)
 
     await message.edit(content=GeneratingEbook())
-    os.remove(f"novels/{novel}/{epub.GetEbookFileName(metadata['title'])}")
-    epub.Generate(novel)
+    os.remove(f"novels/{novel}/{lnbotepub.GetEbookFileName(metadata['title'])}")
+    lnbotepub.Generate(novel)
 
 
 async def DownloadNovel(message, title, novel):
@@ -95,7 +95,7 @@ async def DownloadNovel(message, title, novel):
         json.dump(metadata, file)
 
     await message.edit(content=GeneratingEbook())
-    epub.Generate(novel)
+    lnbotepub.Generate(novel)
 
 
 def latest(soup):
@@ -152,11 +152,15 @@ def download_chapter(novel, nmb, chapter_info):
     soup = BeautifulSoup(response.text, "lxml")
     text = "\n\n".join(
         [
-            p.text.strip()
-            for p in soup.find("div", id="chapterhidden", class_="hidden")
-            if not isinstance(p, NavigableString) and not is_ads(p)
+            e
+            for e in [
+                p.text.strip()
+                for p in soup.find("div", id="chapterhidden", class_="hidden")
+                if not isinstance(p, NavigableString) and not is_ads(p)
+            ]
+            if e
         ]
-    )
+    )  # enjoy
 
     if "Chapter" in text[:50]:
         text = text.replace("Chapter", "# Chapter", 1)

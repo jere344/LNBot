@@ -7,7 +7,7 @@ import re
 import json
 import os
 from messages import *
-import epub
+import lnbotepub
 
 headers = {
     "Host": "www.lightnovelworld.com",
@@ -78,8 +78,8 @@ async def Update(message, novel, latest_availible):
     await message.edit(content=ChapterlistDownloaded())
 
     await message.edit(content=GeneratingEbook())
-    os.remove(f"{download_path}/{epub.GetEbookFileName(metadata['title'])}")
-    epub.Generate(novel)
+    os.remove(f"{download_path}/{lnbotepub.GetEbookFileName(metadata['title'])}")
+    lnbotepub.Generate(novel)
 
 
 async def DownloadNovel(message, novel):
@@ -134,7 +134,7 @@ async def DownloadNovel(message, novel):
         await message.edit(content=ChapterDownloaded(chapter_id, number_of_chapter))
 
     await message.edit(content=GeneratingEbook())
-    epub.Generate(novel)
+    lnbotepub.Generate(novel)
 
 
 def Latest(novel: str, proxies={}):

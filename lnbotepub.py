@@ -14,9 +14,7 @@ def GetEbookFileName(title):
 
 async def send_epub(ctx, real_name, user_readable_name):
     await ctx.send(
-        file=discord.File(
-            rf"novels/{real_name}/{epub.GetEbookFileName(user_readable_name)}"
-        )
+        file=discord.File(rf"novels/{real_name}/{GetEbookFileName(user_readable_name)}")
     )
 
 

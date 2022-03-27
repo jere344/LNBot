@@ -3,7 +3,7 @@ import sources
 import _misc_ as misc
 from messages import *
 from lnbotdecorator import LnBotDecorator
-import epub
+import lnbotepub
 
 
 @lib.bot.command()
@@ -55,4 +55,4 @@ async def download(ctx, *novel):
     await misc.edit(message, NovelDownloaded(user_readable_name), arguments)
 
     if arguments["epub"]:
-        await epub.send_epub(ctx, real_name, user_readable_name)
+        await lnbotepub.send_epub(ctx, real_name, user_readable_name)
