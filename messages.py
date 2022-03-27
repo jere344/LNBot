@@ -14,11 +14,6 @@ class BaseMessage(str):
         return super().__init__()
 
 
-class SendingEbook(BaseMessage):
-    FR = "Ebook en cour d'envoi ..."
-    EN = "Sending Ebook ..."
-
-
 class ChapterDownloaded(BaseMessage):
     def __init__(self, chap_number, max_chap) -> str:
         self.EN = f"{chap_number}/{max_chap} chapters dowloaded"
@@ -53,8 +48,8 @@ class DownloadingNovel(BaseMessage):
 
 class NovelDownloaded(BaseMessage):
     def __init__(self, novel):
-        self.EN = f"{novel} downloaded, sending ..."
-        self.FR = f"{novel} téléchargé, enovoi en cours ..."
+        self.EN = f"{novel} downloaded"
+        self.FR = f"{novel} téléchargé"
 
 
 class GeneratingEbook(BaseMessage):
@@ -80,3 +75,8 @@ class TooManyFound(BaseMessage):
 class MetadataDownloaded(BaseMessage):
     EN = "Metadata downloaded"
     FR = "Metadonnées téléchargés"
+
+
+class SendingEpub(BaseMessage):
+    EN = "Sending epub ..."
+    FR = " Epub en cours d'envoi ..."

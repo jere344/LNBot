@@ -55,4 +55,5 @@ async def download(ctx, *novel):
     await misc.edit(message, NovelDownloaded(user_readable_name), arguments)
 
     if arguments["epub"]:
+        await misc.edit(message, SendingEpub(), arguments)
         await lnbotepub.send_epub(ctx, real_name, user_readable_name)
