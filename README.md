@@ -51,7 +51,7 @@ Exemple :
 ![Imgur Image](https://i.imgur.com/PohOwii.png)
 ![Imgur Image](https://i.imgur.com/wFVsn7g.png)
 
-(I will update the help command later to give actual novels)
+(I will update the help command later to give actual help)
 
 
 
