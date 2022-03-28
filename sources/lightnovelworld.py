@@ -9,6 +9,9 @@ import os
 from messages import *
 import lnbotepub
 
+lang = ["EN"]
+source = "https://www.lightnovelworld.com/"
+
 headers = {
     "Host": "www.lightnovelworld.com",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0",
@@ -82,8 +85,7 @@ async def Update(message, novel, latest_availible):
     lnbotepub.Generate(novel)
 
 
-async def DownloadNovel(message, novel):
-    novel_title, novel = novel
+async def DownloadNovel(message, novel_title, novel):
     download_path = f"novels/{novel}"
 
     # Check if the novel is aldready downloaded and if so if new  chapters has been posted
@@ -103,6 +105,7 @@ async def DownloadNovel(message, novel):
 
     metadata = {}
     metadata["source"] = "lightnovelworld"
+    metadata["language"] = "EN"
     metadata["latest"] = latest_availible
     metadata["title"] = novel_title
 

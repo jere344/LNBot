@@ -11,18 +11,27 @@
 #     print(module)
 #     importlib.import_module(module)
 
-import sources.lightnovelworld
-import sources.readlightnovel
+import sources.lightnovelworld as lightnovelworld
+import sources.readlightnovel as readlightnovel
+
+sources = [lightnovelworld, readlightnovel]
 
 
 async def DownloadNovel(message, title, novel, source):
     if source == "lightnovelworld":
-        await sources.lightnovelworld.DownloadNovel(message, (title, novel))
+        await lightnovelworld.DownloadNovel(message, title, novel)
     elif source == "readlightnovel":
-        await sources.readlightnovel.DownloadNovel(message, title, novel)
+        await readlightnovel.DownloadNovel(message, title, novel)
     else:
         print("unknown source")
 
 
-def Search(novel):
-    return sources.lightnovelworld.Search(novel) + sources.readlightnovel.Search(novel)
+def Search(novel, arguments):
+    result = []
+    for source in sources:
+        if arguments["lang"] == "all" or arguments["lang"] in source.lang:
+            if arguments["source"] == "all" or arguments["source"] in source.source:
+
+                result += source.Search(novel)
+
+    return result

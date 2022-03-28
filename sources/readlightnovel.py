@@ -5,6 +5,9 @@ import json
 import lnbotepub
 from messages import *
 
+lang = ["EN"]
+source = "https://www.readlightnovel.me/"
+
 header = {"X-Requested-With": "XMLHttpRequest"}
 
 
@@ -73,6 +76,8 @@ async def DownloadNovel(message, title, novel):
 
     metadata = {}
 
+    metadata["source"] = "readlightnovel"
+    metadata["language"] = "EN"
     metadata["title"] = title
     metadata["url"] = url
     metadata["summary"] = summary(soup)

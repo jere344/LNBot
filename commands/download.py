@@ -14,6 +14,8 @@ async def download(ctx, *novel):
         "pdf": config.pdf,
         "console": config.console,
         "epub": config.epub,
+        "lang": config.download_lang,
+        "source": config.source,
     }
 
     # Check if there are argument at the end (ex : .download lord of the mysteries -f -pdf)
@@ -28,12 +30,17 @@ async def download(ctx, *novel):
 
                 # Remove argument from the novel name
                 novel = novel[:-1]
+            elif ":" in arg:
+                arg, value = arg.split(":")
+                arguments[arg] = value
+
+                novel = novel[:-1]
         else:
             break
 
     novel = " ".join(novel)
 
-    novels_found = sources.Search(novel)
+    novels_found = sources.Search(novel, arguments)
     # novel_fund is a list of tupple of (user_readable_name, real_name, source)
 
     if not novels_found:
