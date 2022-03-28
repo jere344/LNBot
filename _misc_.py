@@ -23,11 +23,11 @@ async def ask_which(ctx: Context, novels_found: tuple):
 
     # Ask user which novel to download : list all novel founds and place reactions
     novel_list_message = "\n".join(
-        f"{reaction_list[i]} : [{source}] {title}"
-        for i, (title, novel, source) in enumerate(novels_found)
+        f"{reaction_list[i]} : [{language}][{source}] {title}"
+        for i, (title, novel, source, language) in enumerate(novels_found)
     )
     message = await ctx.send(
-        f"{len(novels_found)} novel{'' if len(novels_found) == 1 else 's'} founds :```{novel_list_message}```"
+        f"{len(novels_found)} novel{'' if len(novels_found) == 1 else 's'} founds :```\n{novel_list_message}\n```"
     )
     for i in range(len(novels_found)):
         await message.add_reaction(reaction_list[i])

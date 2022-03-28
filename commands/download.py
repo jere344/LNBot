@@ -54,7 +54,7 @@ async def download(ctx, *novel):
     if not selected:
         return
 
-    user_readable_name, real_name, source = selected
+    user_readable_name, real_name, source, *_ = selected
 
     message = await misc.send(ctx, DownloadingNovel(user_readable_name), arguments)
     await sources.DownloadNovel(message, user_readable_name, real_name, source)

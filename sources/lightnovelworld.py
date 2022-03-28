@@ -41,7 +41,7 @@ def Search(novel):
     novels_found = []
     for li in soup.find_all("li"):
         a = li.find("a")
-        novels_found.append((a["title"], a["href"][7:], "lightnovelworld"))
+        novels_found.append((a["title"], a["href"][7:], "lightnovelworld", "EN"))
         # [7:] remove the /novel/
 
     return novels_found

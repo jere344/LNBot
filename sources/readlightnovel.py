@@ -25,6 +25,7 @@ def Search(novel):
             li.find("span", class_="title").text,
             li.find("a")["href"].split("/")[-1],
             "readlightnovel",
+            "EN",
         )
         for li in soup.findAll("li")
     ]
