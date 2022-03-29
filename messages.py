@@ -77,6 +77,8 @@ class MetadataDownloaded(BaseMessage):
     FR = "Metadonnées téléchargés"
 
 
-class SendingEpub(BaseMessage):
-    EN = "Sending epub ..."
-    FR = " Epub en cours d'envoi ..."
+class SendingEbook(BaseMessage):
+    def __init__(self, ebook_type):
+
+        self.EN = f"Sending {ebook_type} ..."
+        self.FR = f"{ebook_type} en cours d'envoi ..."

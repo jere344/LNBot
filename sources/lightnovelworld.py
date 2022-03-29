@@ -1,13 +1,11 @@
 from bs4 import BeautifulSoup, NavigableString
 import cloudscraper
-import _misc_ as misc
 import requests
 import re
-
+import ebookgenerators
 import json
 import os
 from messages import *
-import lnbotepub
 
 lang = ["EN"]
 source = "https://www.lightnovelworld.com/"
@@ -80,9 +78,7 @@ async def Update(message, novel, latest_availible):
 
     await message.edit(content=ChapterlistDownloaded())
 
-    await message.edit(content=GeneratingEbook())
-    os.remove(f"{download_path}/{lnbotepub.GetEbookFileName(metadata['title'])}")
-    lnbotepub.Generate(novel)
+    ebookgenerators.DeleteEbook(novel, metadata["title"])
 
 
 async def DownloadNovel(message, novel_title, novel):
@@ -135,9 +131,6 @@ async def DownloadNovel(message, novel_title, novel):
             file.write(ScrapChapter(chapter_info))
 
         await message.edit(content=ChapterDownloaded(chapter_id, number_of_chapter))
-
-    await message.edit(content=GeneratingEbook())
-    lnbotepub.Generate(novel)
 
 
 def Latest(novel: str, proxies={}):

@@ -5,20 +5,7 @@ import json
 import discord
 
 
-def GetEbookFileName(title):
-    illegal = """\/:*?"<>|"""
-    for char in illegal:
-        title.replace(char, " ")
-    return f"{title}.epub"
-
-
-async def send_epub(ctx, real_name, user_readable_name):
-    await ctx.send(
-        file=discord.File(rf"novels/{real_name}/{GetEbookFileName(user_readable_name)}")
-    )
-
-
-def Generate(novel_real_name):
+def Generate(novel_real_name, file_path):
     novel_path = f"novels/{novel_real_name}"
     with open(f"{novel_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
@@ -92,7 +79,7 @@ def Generate(novel_real_name):
     book.add_item(css)
     book.spine = spine
     epub.write_epub(
-        f"{novel_path}/{GetEbookFileName(metadata['title'])}",
+        file_path,
         book,
         {"epub3_pages": False},
     )

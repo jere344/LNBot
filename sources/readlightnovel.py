@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup, NavigableString
 import os
 import json
-import lnbotepub
+import ebookgenerators
 from messages import *
 
 lang = ["EN"]
@@ -47,9 +47,7 @@ async def update(message, soup, metadata, novel, latest_release):
     with open(f"novels/{novel}/metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
-    await message.edit(content=GeneratingEbook())
-    os.remove(f"novels/{novel}/{lnbotepub.GetEbookFileName(metadata['title'])}")
-    lnbotepub.Generate(novel)
+    ebookgenerators.DeleteEbook(novel, metadata["title"])
 
 
 async def DownloadNovel(message, title, novel):
@@ -99,9 +97,6 @@ async def DownloadNovel(message, title, novel):
 
     with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
-
-    await message.edit(content=GeneratingEbook())
-    lnbotepub.Generate(novel)
 
 
 def latest(soup):

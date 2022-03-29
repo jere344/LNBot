@@ -3,7 +3,7 @@ import sources
 import _misc_ as misc
 from messages import *
 from lnbotdecorator import LnBotDecorator
-import lnbotepub
+import ebookgenerators
 
 
 @lib.bot.command()
@@ -16,6 +16,7 @@ async def download(ctx, *novel):
         "epub": config.epub,
         "lang": config.download_lang,
         "source": config.source,
+        "raw": config.raw,
     }
 
     # Check if there are argument at the end (ex : .download lord of the mysteries -f -pdf)
@@ -62,5 +63,8 @@ async def download(ctx, *novel):
     await misc.edit(message, NovelDownloaded(user_readable_name), arguments)
 
     if arguments["epub"]:
-        await misc.edit(message, SendingEpub(), arguments)
-        await lnbotepub.send_epub(ctx, real_name, user_readable_name)
+        await misc.edit(message, SendingEbook("epub"), arguments)
+        await ebookgenerators.SendEbook(ctx, real_name, user_readable_name, "epub")
+    if arguments["raw"]:
+        await misc.edit(message, SendingEbook("raw"), arguments)
+        await ebookgenerators.SendEbook(ctx, real_name, user_readable_name, "raw")
