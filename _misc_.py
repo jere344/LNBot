@@ -27,7 +27,7 @@ async def ask_which(ctx: Context, novels_found: tuple):
         for i, (title, novel, source, language) in enumerate(novels_found)
     )
     message = await ctx.send(
-        f"{len(novels_found)} novel{'' if len(novels_found) == 1 else 's'} founds :```\n{novel_list_message}\n```"
+        f"{len(novels_found)} novel{'' if len(novels_found) == 1 else 's'} founds :\n```\n{novel_list_message}\n```"
     )
     for i in range(len(novels_found)):
         await message.add_reaction(reaction_list[i])
