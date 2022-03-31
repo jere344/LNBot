@@ -71,3 +71,41 @@ async def edit(message, content, argument):
         print(content)
 
     return await message.edit(content=content)
+
+
+import config
+
+
+def parse_novel_and_arguments(*novel):
+    arguments = {
+        "v": config.v,
+        "pdf": config.pdf,
+        "console": config.console,
+        "epub": config.epub,
+        "lang": config.download_lang,
+        "source": config.source,
+        "raw": config.raw,
+    }
+
+    # Check if there are argument at the end (ex : .download lord of the mysteries -f -pdf)
+    # And change the argument dict depending of that
+    for e in reversed(novel):
+        if e.startswith("-"):
+            arg = e[1:]
+            if arg in arguments:
+                # Not a common behaviour but the easiest one I found here
+                # Option do not set to enabled, but switch state
+                arguments[arg] = not arguments[arg]
+
+                # Remove argument from the novel name
+                novel = novel[:-1]
+            elif ":" in arg:
+                arg, value = arg.split(":")
+                arguments[arg] = value
+
+                novel = novel[:-1]
+        else:
+            break
+
+    novel = " ".join(novel)
+    return novel, arguments
