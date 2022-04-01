@@ -3,6 +3,8 @@ import discord
 import lib
 from asyncio.exceptions import TimeoutError
 
+from messages import NovelFounds
+
 
 reaction_list = [
     "0️⃣",
@@ -26,9 +28,7 @@ async def ask_which(ctx: Context, novels_found: tuple):
         f"{reaction_list[i]} : [{language}][{source}] {title}"
         for i, (title, novel, source, language) in enumerate(novels_found)
     )
-    message = await ctx.send(
-        f"{len(novels_found)} novel{'' if len(novels_found) == 1 else 's'} founds :\n```\n{novel_list_message}\n```"
-    )
+    message = await ctx.send(NovelFounds(len(novels_found), novel_list_message))
     for i in range(len(novels_found)):
         await message.add_reaction(reaction_list[i])
 
