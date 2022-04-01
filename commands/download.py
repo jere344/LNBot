@@ -7,7 +7,10 @@ import ebookgenerators
 
 
 @lib.bot.command()
-@LnBotDecorator(help_message="Download novel")
+@LnBotDecorator(
+    help_message=DownloadHelpMessage().__str__(),  # I don't know why I need to use __str__() here but it doesn't work without it
+    help_exemple="download lord of the mysteries",
+)
 async def download(ctx, *novel):
     novel, arguments = misc.parse_novel_and_arguments(*novel)
 
