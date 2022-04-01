@@ -1,3 +1,4 @@
+from lib2to3.pytree import Base
 import config
 
 
@@ -172,8 +173,15 @@ Variablen Optionen mit Standardwerten: ('all' für alles anzeigen)
 -source:{config.source} : zeigt nur Novel die den Namen der Quelle entsprechen [ex : source:world] -> Quelle mit 'world' in Namen"""
 
 
-class BotToken(BaseException):
+class BotToken(BaseMessage):
     EN = "\n\n\t\t\t/!\  You need paste your bot token in the TOKEN file. More info on https://www.writebots.com/discord-bot-token/\n"
     FR = "\n\n\t\t\t/!\  Vous devez coller votre token de bot dans le fichier TOKEN. Plus d'info sur https://www.writebots.com/discord-bot-token/\n"
     ES = "\n\n\t\t\t/!\  Necesitas pegar tu token de bot en el fichero TOKEN. Mas información en https://www.writebots.com/discord-bot-token/\n"
     DE = "\n\n\t\t\t/!\  Du musst deinen Bot Token in der TOKEN Datei einfügen. Mehr Informationen unter https://www.writebots.com/discord-bot-token/\n"
+
+
+class NoHelpAvailible(BaseMessage):
+    EN = "No help availible for this command."
+    FR = "Aucune aide disponible pour cette commande."
+    ES = "No hay ayuda disponible para este comando."
+    DE = "Keine Hilfe für diesen Befehl verfügbar."
