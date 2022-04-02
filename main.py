@@ -1,4 +1,5 @@
 import os
+import messages
 
 if __name__ == "__main__":
     if not os.path.isfile("TOKEN"):
@@ -11,9 +12,7 @@ if __name__ == "__main__":
         if not TOKEN:
             import sys
 
-            print(
-                "\n\n\t\t\t/!\  You need paste your bot token in the TOKEN file. More info on https://www.writebots.com/discord-bot-token/\n"
-            )
+            print(messages.BotToken())
 
             sys.exit()
 

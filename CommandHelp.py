@@ -1,5 +1,6 @@
 from typing import Callable
 import inspect
+from messages import *
 
 
 class CommandHelp:
@@ -8,7 +9,7 @@ class CommandHelp:
 
     def __init__(self, func: Callable, message=None, exemple=None) -> None:
         if not message:
-            self.message = "No help availible for this command"
+            self.message = NoHelpAvailible()
         else:
             self.message = message
 
