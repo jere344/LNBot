@@ -26,7 +26,7 @@ It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel
 ## Features
 
 - Download novel from lightnovelworld and readlightnovel
-- Multi-language support for the bot (not yet for the novels though)
+- Multi-language support for the bot : currently French and English are human-translated and Spanish, Deutsch and Italian are translated by github copilot
 - Totally open sources
 - Add your own commands simply by creating a .py file in the commands folder following "ping.py"as an exemple
 
@@ -48,11 +48,10 @@ You can try the bot right now using [this invitation](https://discord.com/oauth2
 
 Exemple :
 
-![Imgur Image](https://i.imgur.com/PohOwii.png)
-![Imgur Image](https://i.imgur.com/wFVsn7g.png)
+![Imgur Image](https://i.imgur.com/OowN1zf.png)
 
-(I will update the help command later to give actual help)
-
+Use .help to show non-hidden commands
+Use @LnBotDecorator(hidden=True) to hide command from .help
 
 
 ## Installation
@@ -61,13 +60,13 @@ Exemple :
 - Install [Requirements](#Requirements)
 - Create a "TOKEN" file next to main.py and paste your discord bot token here
 - Choose language, command prefix ... in config.py or keep defaults
-- Launch main.py
+- Start main.py
 
 
 
 ## Requirements
 
-- A recent version of python
+- [A recent version of python](https://www.python.org/downloads/)
 - [discord.py](https://pypi.org/project/discord.py/)
 - [EbookLib](https://pypi.org/project/EbookLib/)
 

@@ -35,4 +35,7 @@ def DeleteEbook(real_name, user_readable_name):
     """Call this when a novel is updated to delete outdated book files"""
     path = f"novels/{real_name}"
     for ext in extensions.values():
-        os.remove(f"{path}/{GetEbookFileName(user_readable_name)}{ext}")
+        try:
+            os.remove(f"{path}/{GetEbookFileName(user_readable_name)}{ext}")
+        except FileNotFoundError:
+            pass
