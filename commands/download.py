@@ -3,7 +3,7 @@ import sources
 import _misc_ as misc
 from messages import *
 from lnbotdecorator import LnBotDecorator
-import ebookgenerators
+import filesharing
 
 
 @lib.bot.command()
@@ -37,7 +37,7 @@ async def download(ctx, *novel):
 
     if arguments["epub"]:
         await misc.edit(message, SendingEbook("epub"), arguments)
-        await ebookgenerators.SendEbook(ctx, real_name, user_readable_name, "epub")
+        await filesharing.SendEbook(ctx, real_name, user_readable_name, "epub")
     if arguments["raw"]:
         await misc.edit(message, SendingEbook("raw"), arguments)
-        await ebookgenerators.SendEbook(ctx, real_name, user_readable_name, "raw")
+        await filesharing.SendEbook(ctx, real_name, user_readable_name, "raw")

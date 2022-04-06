@@ -1,35 +1,14 @@
-from flask import Flask
-from flask import send_from_directory, abort
-import pathlib
-
-app = Flask(__name__)
-novels_path = pathlib.Path().resolve().joinpath("novels")
-app.config["UPLOAD_FOLDER"] = novels_path
-
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-
-@app.route("/download/<foldername>/<filename>")
-def download(foldername, filename):
-    try:
-        return send_from_directory(
-            directory=app.config["UPLOAD_FOLDER"],
-            path=foldername,
-            filename=filename,
-            as_attachment=True,
-        )
-    except FileNotFoundError:
-        abort(404)
-
-
 import threading
+from filesharing.local.flaskapp import app
+import config
 
 
 def main():
-    app.run(port=5000, debug=True, use_reloader=False)
+    app.run(host=config.host, port=config.port, debug=True, use_reloader=False)
 
 
-app_thread = threading.Thread(target=main).start()
+threading.Thread(target=main).start()
+
+
+def get_url(novel, filename):
+    return f"http://{config.host}:{config.port}/download/{novel}/{filename}"
