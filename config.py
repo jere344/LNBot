@@ -18,6 +18,8 @@ sharing_small = "discord"  # For files smaller than 8mb
 sharing_large = "local"  # For file larger than 8mb
 
 
-# For "local" sharing method
+# Required for "local" sharing method
+# Defaults are 127.0.0.1 and 127.0.0.1
+# You will need to use port forwarding for it to work outside your network
 host = "127.0.0.1"
 port = "5000"
