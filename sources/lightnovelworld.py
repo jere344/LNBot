@@ -51,7 +51,7 @@ def Search(novel):
 
 async def Update(message, novel, latest_availible):
     await message.edit(content=UpdateDetected())
-    download_path = f"novels/{novel}"
+    download_path = f"novels/lightnovelworld - {novel}"
 
     with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
@@ -82,11 +82,11 @@ async def Update(message, novel, latest_availible):
 
     await message.edit(content=ChapterlistDownloaded())
 
-    ebookgenerators.DeleteEbook(novel, metadata["title"])
+    ebookgenerators.DeleteEbook(novel, metadata["title"], "lightnovelworld")
 
 
 async def DownloadNovel(message, novel_title, novel):
-    download_path = f"novels/{novel}"
+    download_path = f"novels/lightnovelworld - {novel}"
 
     # Check if the novel is aldready downloaded and if so if new  chapters has been posted
     latest_availible = Latest(novel)

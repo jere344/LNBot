@@ -1,6 +1,7 @@
 import threading
 from filesharing.local.flaskapp import app
 import config
+from urllib.parse import quote
 
 
 def main():
@@ -10,5 +11,5 @@ def main():
 threading.Thread(target=main).start()
 
 
-def get_url(novel, filename):
-    return f"http://{config.host}:{config.port}/download/{novel}/{filename}"
+def get_url(novel, filename, source):
+    return f"http://{config.host}:{config.port}/download/{quote(source + ' - ' + novel)}/{quote(filename)}"

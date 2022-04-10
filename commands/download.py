@@ -37,7 +37,7 @@ async def download(ctx, *novel):
 
     if arguments["epub"]:
         await misc.edit(message, SendingEbook("epub"), arguments)
-        await filesharing.SendEbook(ctx, real_name, user_readable_name, "epub")
+        await filesharing.SendEbook(ctx, real_name, user_readable_name, source, "epub")
     if arguments["raw"]:
         await misc.edit(message, SendingEbook("raw"), arguments)
-        await filesharing.SendEbook(ctx, real_name, user_readable_name, "raw")
+        await filesharing.SendEbook(ctx, real_name, user_readable_name, source, "raw")

@@ -44,14 +44,16 @@ async def update(message, soup, metadata, novel, latest_release):
 
     metadata["latest"] = latest_release
 
-    with open(f"novels/{novel}/metadata.json", "w", encoding="utf-8") as file:
+    with open(
+        f"novels/readlightnovel - {novel}/metadata.json", "w", encoding="utf-8"
+    ) as file:
         json.dump(metadata, file)
 
-    ebookgenerators.DeleteEbook(novel, metadata["title"])
+    ebookgenerators.DeleteEbook(novel, metadata["title"], "readlightnovel")
 
 
 async def DownloadNovel(message, title, novel):
-    download_path = f"novels/{novel}"
+    download_path = f"novels/readlightnovel - {novel}"
 
     url = f"https://www.readlightnovel.me/{novel}"
     response = requests.get(url)
@@ -135,7 +137,7 @@ def cover(soup, novel):
     cover_url = soup.find("div", class_="novel-cover").find("img")["src"]
     cover_data = requests.get(cover_url, allow_redirects=True)
     cover_format = cover_url.split(".")[-1]
-    with open(f"novels/{novel}/cover.{cover_format}", "wb") as file:
+    with open(f"novels/readlightnovel - {novel}/cover.{cover_format}", "wb") as file:
         file.write(cover_data.content)
 
 
@@ -170,5 +172,7 @@ def download_chapter(novel, nmb, chapter_info):
     else:
         text = f"# {title}\n\n{text}"
 
-    with open(f"novels/{novel}/chapters/{nmb}.txt", "w", encoding="utf-8") as file:
+    with open(
+        f"novels/readlightnovel - {novel}/chapters/{nmb}.txt", "w", encoding="utf-8"
+    ) as file:
         file.write(text)

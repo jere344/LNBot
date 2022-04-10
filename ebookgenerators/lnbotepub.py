@@ -5,8 +5,8 @@ import json
 import discord
 
 
-def Generate(novel_real_name, file_path):
-    novel_path = f"novels/{novel_real_name}"
+def Generate(novel_real_name, file_path, source):
+    novel_path = f"novels/{source} - {novel_real_name}"
     with open(f"{novel_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
 
