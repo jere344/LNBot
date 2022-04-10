@@ -6,6 +6,7 @@ import ebookgenerators
 import json
 import os
 from messages import *
+import glob
 
 lang = ["EN"]
 source = "https://www.lightnovelworld.com/"
@@ -85,8 +86,30 @@ async def Update(message, novel, latest_availible):
     ebookgenerators.DeleteEbook(novel, metadata["title"], "lightnovelworld")
 
 
+def handle_novel_name_change(novel: str):
+    """lightnovelworld change the number at the end of the url at every release.
+    Fhis function will search if the novel name in url has been updated and if so will rename the folder to the new one"""
+    if os.path.isdir(f"novels/lightnovelworld - {novel}"):
+        return
+
+    splited_novel = novel.split("-")
+    if splited_novel[-1].isnumeric():
+        novel_without_number = "-".join(splited_novel[:-1])
+    else:
+        novel_without_number = "-".join(splited_novel)
+
+    downloaded_with_same_name = glob.glob(
+        f"novels/lightnovelworld - {novel_without_number}*"
+    )
+
+    if downloaded_with_same_name:
+        os.rename(downloaded_with_same_name[0], f"novels/lightnovelworld - {novel}")
+
+
 async def DownloadNovel(message, novel_title, novel):
     download_path = f"novels/lightnovelworld - {novel}"
+
+    handle_novel_name_change(novel)
 
     # Check if the novel is aldready downloaded and if so if new  chapters has been posted
     latest_availible = Latest(novel)
