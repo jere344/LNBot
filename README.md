@@ -29,7 +29,7 @@ It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel
 - Multi-language support for the bot : currently French and English are human-translated and Spanish, Deutsch and Italian are translated by github copilot
 - Totally open sources
 - Add your own commands simply by creating a .py file in the commands folder following "ping.py"as an exemple
-
+- Upload file using discord or self hosted with flask server (google drive coming soon)
 
 
 ## Try it now
