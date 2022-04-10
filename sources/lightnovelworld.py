@@ -6,26 +6,29 @@ import ebookgenerators
 import json
 import os
 from messages import *
+import glob
 
 lang = ["EN"]
 source = "https://www.lightnovelworld.com/"
 
-headers = {
-    "Host": "www.lightnovelworld.com",
-    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0",
-    "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "utf-8",
-    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "LNRequestVerifyToken": "CfDJ8FmyhIN_ipxGu0PT0IWOxoko73KMVQ0tEP7G2sEbMDc_DpCXli3NaDRFNbHKn9HsKWaT0S8pZkqUkfzSZo2IlppeEFpZiXAv5--wyJIeo4OzB_3yz3kal11OY3j_WCBjRATaPOc4XYKqStttde5vHUM",
-    "X-Requested-With": "XMLHttpRequest",
-    "Origin": "https://www.lightnovelworld.com",
-    "DNT": "1",
-    "Alt-Used": "www.lightnovelworld.com",
-    "Connection": "keep-alive",
-    "Referer": "https://www.lightnovelworld.com/search",
-    "Cookie": "euconsent-v2=CPVrlMSPVrlMSAKAnAENCGCsAP_AAH_AACaIIpNd_X__bX9j-_5_f_t0eY1P9_r3v-QzjhfNt-8F3L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzHsak2cpyNKJ7LEmnMZO2dYGHtPn9lDuYKY7_5___fz3j-v_t_-39T378X_3_d5_2---vCfV599jLv9____39nP___9v-_8______8EUgCTDUvIAuzLHBk2jSqFECMKwkKgFABRQDC0RWADg4KdlYBPqCFgAgFSEYEQIMQUYMAgAEEgCQiICQAsEAiAIgEAAIAUYCEABEwCCwAsDAIABQDQsQAoABAkIMjgqOUwICpFooJbKxBKCvY0wgDLPAigURkVAAiSaAFgZCQsHMcASAl4skDTFC-QAiAA.dgAACFgAAAAA; addtl_consent=1~39.4.3.9.6.9.13.6.4.15.9.5.2.7.4.1.7.1.3.2.10.3.5.4.21.4.6.9.7.10.2.9.2.18.7.6.14.5.20.6.5.1.3.1.11.29.4.14.4.5.3.10.6.2.9.6.6.4.5.4.4.29.4.5.3.1.6.2.2.17.1.17.10.9.1.8.6.2.8.3.4.142.4.8.35.7.15.1.14.3.1.8.10.25.3.7.25.5.18.9.7.41.2.4.18.21.3.4.2.1.6.6.5.2.14.18.7.3.2.2.8.20.8.8.6.3.10.4.20.2.13.4.6.4.11.1.3.22.16.2.6.8.2.4.11.6.5.33.11.8.1.10.28.12.1.3.21.2.7.6.1.9.30.17.4.9.15.8.7.3.6.6.7.2.4.1.7.12.13.22.13.2.12.2.10.1.4.15.2.4.9.4.5.4.7.13.5.15.4.13.4.14.8.2.15.2.5.5.1.2.2.1.2.14.7.4.8.2.9.10.18.12.13.2.18.1.1.3.1.1.9.25.4.1.19.8.4.5.2.1.5.4.8.4.2.2.2.14.2.13.4.2.6.9.6.3.4.3.5.2.3.6.10.11.6.3.16.3.11.3.1.2.3.9.19.11.15.3.10.7.6.4.3.4.6.3.3.3.3.1.1.1.6.11.3.1.1.7.4.6.1.10.5.2.6.3.2.2.4.3.2.2.7.2.13.7.12.2.1.3.3.4.5.4.3.2.2.4.1.3.1.1.1.2.9.1.6.9.1.5.2.1.7.2.8.11.1.3.1.1.2.1.3.2.6.1.5.6.1.5.3.1.3.1.1.2.2.7.7.1.4.1.2.6.1.2.1.1.3.1.1.4.1.1.2.1.8.1.7.4.3.2.1.3.5.3.9.6.1.15.10.28.1.2.2.12.3.4.1.6.3.4.7.1.3.1.1.3.1.5.3.1.3.2.2.1.1.4.2.1.2.1.1.1.2.2.4.2.1.2.2.2.4.1.1.1.2.1.1.1.1.1.1.2.1.1.1.2.2.1.1.2.1.2.1.7.1.2.1.1.1.2.1.1.1.1.2.1.1.3.2.1.1.8.1.1.1.5.2.1.6.5.1.1.1.1.1.2.2.3.1.1.4.1.1.2.2.1.1.4.2.1.1.2.2.1.2.1.2.3.1.1.2.4.1.1.1.5.1.3.6.3.1.5.2.3.4.1.2.3.1.4.2.1.2.2.2.1.1.1.1.1.1.11.1.3.1.1.2.2.1.4.2.3.2.1.4.1.1.1.1.4.2.1.1.2.5.1.9.4.1.1.3.1.7.1.4.5.1.7.2.1.1.1.2.1.1.1.4.2.1.12.1.1.3.1.2.2.3.1.2.1.1.1.2.1.1.2.1.1.1.1.2.1.3.1.5.1.2.4.3.8.2.2.9.7.2.2.1.2.1; lncoreantifrg=CfDJ8MVM-CSaaEdCppBBbxyBpd2kJ0C5BfUpfmlq8yZI0x3H5EK5j__c1ph1E6Q8RwU3Mk4zqcwoMTEQeRpnA7gv3SnYAYlPX-mdT2rwbAAUg-g5MhU2_RAWQCMhVqxaGXeNjYEqmB_JdrtiFez-o85eIqc; googtrans=null; cf_clearance=4h.WdgNqsBeLJ8rB2PqXIiSRIa.AU9of4LxkavpnsYA-1648125284-0-150",
-}
+# encoding is important: Accept-Encoding: utf-8
+raw_header = """accept: */*
+accept-encoding: gzip, deflate, br
+accept-language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7
+Accept-Encoding: utf-8
+content-type: application/x-www-form-urlencoded; charset=UTF-8
+cookie: cf_clearance=vlxuHoxossMkdmdc.laXzZcuI0aWUeULr7rugB4ACLc-1649274575-0-150; _ga=GA1.2.29948112.1649274577; _gid=GA1.2.1578747254.1649274577; _gat_gtag_UA_997028_5=1; euconsent-v2=CPXAHAAPXAHAAAKAoAENCJCsAP_AAH_AACaIIqNd_X__bX9j-_5_f_t0eY1P9_r3_-QzjhfNt-8F3L_W_L0X42E7NF36pq4KuR4Eu3LBIQNlHMHUTUmwaokVrzHsak2cpyNKJ7LEmnMZO2dYGHtPn9lDuYKY7_5___bz3j-v_t_-39T378Xf3_d5_2---vCfV599jbv9f3__39nP___9v-_8_______BFMAkw1LyALsyxwZNo0qhRAjCsJCqBQAUUAwtEVgA4OCnZWAT6ghYAIBUhGBECDEFGDAIABBIAkIiAkALBAIgCIBAACABEAhAARMAgsALAwCAAUA0LEAKAAQJCDI4IjlMCAqRKKCWysQSgr2NMIAyzwIoFEZFQAIkmgBYGQkLBzHAEgJeLJA0xQvkAIwAAAAA.dgAACFgAAAAA; addtl_consent=1~39.4.3.9.6.9.13.6.4.15.9.5.2.7.4.1.7.1.3.2.10.3.5.4.21.4.6.9.7.10.2.9.2.18.7.6.14.5.20.6.5.1.3.1.11.29.4.14.4.5.3.10.6.2.9.6.6.4.5.4.4.29.4.5.3.1.6.2.2.17.1.17.10.9.1.8.6.2.8.3.4.142.4.8.35.7.15.1.14.3.1.8.10.25.3.7.25.5.18.9.7.41.2.4.18.21.3.4.2.1.6.6.5.2.14.18.7.3.2.2.8.20.8.8.6.3.10.4.20.2.13.4.6.4.11.1.3.22.16.2.6.8.2.4.11.6.5.33.11.8.1.10.28.12.1.3.21.2.7.6.1.9.30.17.4.9.15.8.7.3.6.6.7.2.4.1.7.12.13.22.13.2.12.2.10.1.4.15.2.4.9.4.5.4.7.13.5.15.4.13.4.14.8.2.15.2.5.5.1.2.2.1.2.14.7.4.8.2.9.10.18.12.13.2.18.1.1.3.1.1.9.25.4.1.19.8.4.5.2.1.5.4.8.4.2.2.2.14.2.13.4.2.6.9.6.3.4.3.5.2.3.6.10.11.6.3.16.3.11.3.1.2.3.9.19.11.15.3.10.7.6.4.3.4.6.3.3.3.3.1.1.1.6.11.3.1.1.7.4.6.1.10.5.2.6.3.2.2.4.3.2.2.7.2.13.7.12.2.1.3.3.4.5.4.3.2.2.4.1.3.1.1.1.2.9.1.6.9.1.5.2.1.7.2.8.11.1.3.1.1.2.1.3.2.6.1.11.1.5.3.1.3.1.1.2.2.7.7.1.4.1.2.6.1.2.1.1.3.1.1.4.1.1.2.1.8.1.7.4.3.2.1.3.5.3.9.6.1.15.10.28.1.2.2.12.3.4.1.6.3.4.7.1.3.1.1.3.1.5.3.1.3.2.2.1.1.4.2.1.2.1.1.1.2.2.4.2.1.2.2.2.4.1.1.1.2.2.1.1.1.1.2.1.1.1.2.2.1.1.2.1.2.1.7.1.2.1.1.1.2.1.1.1.1.2.1.1.3.2.1.1.8.1.1.1.5.2.1.6.5.1.1.1.1.1.2.2.3.1.1.4.1.1.2.2.1.1.4.2.1.1.2.2.1.2.1.2.3.1.1.2.4.1.1.1.5.1.3.6.3.1.5.2.3.4.1.2.3.1.4.2.1.2.2.2.1.1.1.1.1.1.11.1.3.1.1.2.2.1.4.2.3.3.4.1.1.1.1.4.2.1.1.2.5.1.9.4.1.1.3.1.7.1.4.5.1.7.2.1.1.1.2.1.1.1.4.2.1.12.1.1.3.1.2.2.3.1.2.1.1.1.2.1.1.2.1.1.1.1.2.1.3.1.5.1.2.4.3.8.2.2.9.7.2.2.1.2.1.4; __qca=P0-1764982294-1649274577386; _pbjs_userid_consent_data=6030740747890936; sharedid=ef8e4485-373a-4cf5-a2b3-a87f2c1f124f; __gads=ID=904f51ede25a9e02-22b59fb314d2004f:T=1649274581:S=ALNI_Mb-egW7HCGGe82freGYH5hD856x1w; cto_bundle=EtZ1vV9Lckc5SUZrWFpBd0p5bmF2ckg0MmI5QWU5SmF3S1pGRjVNSGlHenE5cUZHcGZvUmZHQkVVTWZVZERwZTFrJTJCTThFaDJmZkFubm0zWWZyWjJwNXAzdEpOdHBGUkxlZ2glMkJqd2pPRkolMkJkSTJEJTJCaERKU2ZlS25Yakh4M05IUEoxUmJTQU56TkhVZEF1bTQydEM2SVdNNFlwMWsxR0dqNk0zQ05zWGQ2aDJKWllzQSUzRA; _lr_retry_request=true; _lr_env_src_ats=false; lncoreantifrg=CfDJ8FmyhIN_ipxGu0PT0IWOxonbCc7MJ3U2OqH33AhoVVTlh5xi46pmOwiORaT9Wd9ylczgewN6k8TX3npjGYipAoYTy_3jJBBnc06RXlojvPGqpl94uUfwOsCEa9OsHS2YK9ZpDFUEKrJkCbe3tLOlg3o
+lnrequestverifytoken: CfDJ8FmyhIN_ipxGu0PT0IWOxonWUcHLxfymRtASDo-AoWFUAHdrOBy68Ib6wIBsuAcVSBDF3uMfFISgkPEhW7i_TKg7I2WkcdM3umOMMAwHfkQ3kxYu_wegObEbEftI8iw-tKkpKSubaoqMZFZI10Wsnvo
+origin: https://www.lightnovelworld.com
+referer: https://www.lightnovelworld.com/search
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36
+x-requested-with: XMLHttpRequest"""
+headers = {}
+for line in raw_header.split("\n"):
+    if ":" in line:
+
+        key, value = line.split(":", 1)
+        headers[key] = value.strip()
 
 
 def Search(novel):
@@ -35,7 +38,9 @@ def Search(novel):
         {"inputContent": novel},
         headers=headers,
     )
+
     soup = BeautifulSoup(json.loads(response.content)["resultview"], features="lxml")
+
     novels_found = []
     for li in soup.find_all("li"):
         a = li.find("a")
@@ -47,7 +52,7 @@ def Search(novel):
 
 async def Update(message, novel, latest_availible):
     await message.edit(content=UpdateDetected())
-    download_path = f"novels/{novel}"
+    download_path = f"novels/lightnovelworld - {novel}"
 
     with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
@@ -78,11 +83,33 @@ async def Update(message, novel, latest_availible):
 
     await message.edit(content=ChapterlistDownloaded())
 
-    ebookgenerators.DeleteEbook(novel, metadata["title"])
+    ebookgenerators.DeleteEbook(novel, metadata["title"], "lightnovelworld")
+
+
+def handle_novel_name_change(novel: str):
+    """lightnovelworld change the number at the end of the url at every release.
+    Fhis function will search if the novel name in url has been updated and if so will rename the folder to the new one"""
+    if os.path.isdir(f"novels/lightnovelworld - {novel}"):
+        return
+
+    splited_novel = novel.split("-")
+    if splited_novel[-1].isnumeric():
+        novel_without_number = "-".join(splited_novel[:-1])
+    else:
+        novel_without_number = "-".join(splited_novel)
+
+    downloaded_with_same_name = glob.glob(
+        f"novels/lightnovelworld - {novel_without_number}*"
+    )
+
+    if downloaded_with_same_name:
+        os.rename(downloaded_with_same_name[0], f"novels/lightnovelworld - {novel}")
 
 
 async def DownloadNovel(message, novel_title, novel):
-    download_path = f"novels/{novel}"
+    download_path = f"novels/lightnovelworld - {novel}"
+
+    handle_novel_name_change(novel)
 
     # Check if the novel is aldready downloaded and if so if new  chapters has been posted
     latest_availible = Latest(novel)

@@ -3,3 +3,4 @@ novels/*
 __pycache__
 test*.py
 autre/*
+mycreds.json

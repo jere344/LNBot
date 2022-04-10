@@ -1,6 +1,5 @@
 from ebookgenerators import lnbotepub
 from ebookgenerators import raw
-import discord
 import os
 
 ebook_generators = {
@@ -21,19 +20,9 @@ def GetEbookFileName(title):
     return title
 
 
-async def SendEbook(ctx, real_name, user_readable_name, ebook_type):
-
-    file_path = f"novels/{real_name}/{GetEbookFileName(user_readable_name)}{extensions[ebook_type]}"
-
-    if not os.path.isfile(file_path):
-        ebook_generators[ebook_type].Generate(real_name, file_path)
-
-    await ctx.send(file=discord.File(rf"{file_path}"))
-
-
-def DeleteEbook(real_name, user_readable_name):
+def DeleteEbook(real_name, user_readable_name, source):
     """Call this when a novel is updated to delete outdated book files"""
-    path = f"novels/{real_name}"
+    path = f"novels/{source} - {real_name}"
     for ext in extensions.values():
         try:
             os.remove(f"{path}/{GetEbookFileName(user_readable_name)}{ext}")

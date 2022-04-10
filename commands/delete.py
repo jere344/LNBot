@@ -4,6 +4,7 @@ import _misc_ as misc
 import os
 from lnbotdecorator import LnBotDecorator
 import shutil
+import glob
 
 
 @lib.bot.command()
@@ -19,12 +20,6 @@ async def delete(ctx, password: str, *novel):
 
     novel = " ".join(novel)
 
-    # If it's a folder, just delete it
-    if os.path.isdir(f"novels/{novel}"):
-        shutil.rmtree(f"novels/{novel}")
-        return
-    # else it's probably a novel name so we need to check which
-
     novels_found = lightnovelworld.Search(novel)
 
     if not novels_found:
@@ -35,9 +30,9 @@ async def delete(ctx, password: str, *novel):
         await ctx.send(f"Too many novels founds, please enter a more precize search")
         return
 
-    _, real_name, *_ = await misc.ask_which(ctx, novels_found)
+    _, real_name, source, _ = await misc.ask_which(ctx, novels_found)
     try:
-        shutil.rmtree(f"novels/{real_name}")
+        shutil.rmtree(f"novels/{source} - {real_name}")
     except FileNotFoundError:
         await ctx.send("Novel not downloaded")
         return
