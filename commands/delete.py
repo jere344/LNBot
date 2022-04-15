@@ -1,10 +1,8 @@
 import lib
 from sources import lightnovelworld
 import _misc_ as misc
-import os
 from lnbotdecorator import LnBotDecorator
 import shutil
-import glob
 
 
 @lib.bot.command()
@@ -32,7 +30,7 @@ async def delete(ctx, password: str, *novel):
 
     _, real_name, source, _ = await misc.ask_which(ctx, novels_found)
     try:
-        shutil.rmtree(f"novels/{source} - {real_name}")
+        shutil.rmtree(lib.novel_path / f"{source} - {real_name}")
     except FileNotFoundError:
         await ctx.send("Novel not downloaded")
         return

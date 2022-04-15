@@ -1,11 +1,11 @@
-import os
 import messages
+import lib
 
 if __name__ == "__main__":
-    if not os.path.isfile("TOKEN"):
-        open("TOKEN", "w").close()
-    if not os.path.isdir("novels"):
-        os.mkdir("novels")
+    if not lib.main_path / "TOKEN":
+        open(lib.main_path / "TOKEN", "w").close()
+    if not lib.novel_path.exists():
+        lib.novel_path.mkdir()
 
     with open("TOKEN") as file:
         TOKEN = file.read()

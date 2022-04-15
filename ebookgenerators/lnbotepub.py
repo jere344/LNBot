@@ -1,13 +1,12 @@
 from ebooklib import epub
-import os
-import os.path
 import json
-import discord
+import lib
 
 
-def Generate(novel_real_name, file_path, source):
-    novel_path = f"novels/{source} - {novel_real_name}"
-    with open(f"{novel_path}/metadata.json", "r", encoding="utf-8") as file:
+def Generate(novel_real_name, file_path: None, source):
+
+    novel_path = lib.novel_path / f"{source} - {novel_real_name}"
+    with open(novel_path / "metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
 
     book = epub.EpubBook()
@@ -18,18 +17,19 @@ def Generate(novel_real_name, file_path, source):
     book.add_author("N/A")
 
     # necessary since we don't know the extension
-    for file in os.listdir(novel_path):
-        if file[:5] == "cover":
+    for file in novel_path.iterdir():
+        if file.stem == "cover":
             break
-    pic_path = f"{novel_path}/{file}"
 
-    book.set_cover(file, open(pic_path, "rb").read())
+    book.set_cover(str(file), open(file, "rb").read())
     spine = []
 
+    # iterate alphanumerically
     for file in sorted(
-        os.listdir(f"{novel_path}/chapters"), key=lambda x: int(x.split(".")[0])
+        [f for f in (novel_path / "chapters").iterdir()],
+        key=lambda x: int(x.stem),
     ):
-        with open(f"{novel_path}/chapters/{file}", "r", encoding="utf-8") as file:
+        with open(novel_path / "chapters" / file.name, "r", encoding="utf-8") as file:
             chapter_text = file.read().split("\n\n")
 
         title_line = 0
@@ -75,9 +75,11 @@ def Generate(novel_real_name, file_path, source):
 
     book.add_item(epub.EpubNcx())
     book.add_item(epub.EpubNav())
-
     book.add_item(css)
     book.spine = spine
+
+    if not file_path:
+        file_path = lib.novel_path / f"{source} - {novel_real_name}.epub"
     epub.write_epub(
         file_path,
         book,

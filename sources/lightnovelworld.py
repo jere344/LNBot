@@ -4,9 +4,11 @@ import requests
 import re
 import ebookgenerators
 import json
-import os
 from messages import *
 import glob
+import lib
+import os
+
 
 lang = ["EN"]
 source = "https://www.lightnovelworld.com/"
@@ -52,9 +54,9 @@ def Search(novel):
 
 async def Update(message, novel, latest_availible):
     await message.edit(content=UpdateDetected())
-    download_path = f"novels/lightnovelworld - {novel}"
+    download_path = lib.novel_path / f"lightnovelworld - {novel}"
 
-    with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
+    with open(download_path / "metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
 
     number_of_downloaded_chapter = len(metadata["chapterlist"])
@@ -69,8 +71,9 @@ async def Update(message, novel, latest_availible):
         if chapter_id in metadata["chapterlist"]:
             continue
 
-        path = f"{download_path}/chapters/{chapter_id}.txt"
-        with open(path, "w", encoding="utf-8") as file:
+        with open(
+            download_path / "chapters" / f"{chapter_id}.txt", "w", encoding="utf-8"
+        ) as file:
             file.write(ScrapChapter(chapter_info))
 
         await message.edit(content=ChapterDownloaded(downloaded, to_download))
@@ -78,7 +81,7 @@ async def Update(message, novel, latest_availible):
     metadata["chapterlist"] |= ch  # Merge the two dict
     metadata["latest"] = latest_availible
 
-    with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
+    with open(download_path / "metadata.json", "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
     await message.edit(content=ChapterlistDownloaded())
@@ -89,7 +92,7 @@ async def Update(message, novel, latest_availible):
 def handle_novel_name_change(novel: str):
     """lightnovelworld change the number at the end of the url at every release.
     Fhis function will search if the novel name in url has been updated and if so will rename the folder to the new one"""
-    if os.path.isdir(f"novels/lightnovelworld - {novel}"):
+    if (lib.novel_path / f"lightnovelworld - {novel}").exists():
         return
 
     splited_novel = novel.split("-")
@@ -99,22 +102,27 @@ def handle_novel_name_change(novel: str):
         novel_without_number = "-".join(splited_novel)
 
     downloaded_with_same_name = glob.glob(
-        f"novels/lightnovelworld - {novel_without_number}*"
+        str(lib.novel_path / f"lightnovelworld - {novel_without_number}*")
     )
 
     if downloaded_with_same_name:
-        os.rename(downloaded_with_same_name[0], f"novels/lightnovelworld - {novel}")
+        os.rename(
+            downloaded_with_same_name[0],
+            lib.novel_path / f"lightnovelworld - {novel}",
+        )
 
 
 async def DownloadNovel(message, novel_title, novel):
-    download_path = f"novels/lightnovelworld - {novel}"
+
+    download_path = lib.novel_path / f"lightnovelworld - {novel}"
 
     handle_novel_name_change(novel)
 
     # Check if the novel is aldready downloaded and if so if new  chapters has been posted
     latest_availible = Latest(novel)
-    if os.path.isdir(download_path):
-        with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
+    metadata_path = download_path / "metadata.json"
+    if download_path.exists() and metadata_path.exists():
+        with open(metadata_path, "r", encoding="utf-8") as file:
             latest_downloaded = json.loads(file.read())["latest"]
 
         if latest_availible == latest_downloaded:
@@ -124,7 +132,7 @@ async def DownloadNovel(message, novel_title, novel):
 
         return
 
-    os.mkdir(download_path)
+    download_path.mkdir()
 
     metadata = {}
     metadata["source"] = "lightnovelworld"
@@ -139,21 +147,21 @@ async def DownloadNovel(message, novel_title, novel):
     metadata["chapterlist"] = chapterlist
     await message.edit(content=ChapterlistDownloaded())
 
-    with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
+    with open(metadata_path, "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
     pic_data, pic_format = ScrapPic(novel)
-    with open(f"{download_path}/cover{pic_format}", "wb") as file:
+    with open(download_path / f"cover{pic_format}", "wb") as file:
         file.write(pic_data)
     await message.edit(content=CoverDownloaded())
 
     await message.edit(content=MetadataDownloaded())
 
-    os.mkdir(f"{download_path}/chapters")
+    (download_path / "chapters").mkdir()
     number_of_chapter = len(chapterlist)
 
     for chapter_id, chapter_info in chapterlist.items():
-        path = f"{download_path}/chapters/{chapter_id}.txt"
+        path = download_path / "chapters", f"{chapter_id}.txt"
         with open(path, "w", encoding="utf-8") as file:
             file.write(ScrapChapter(chapter_info))
 

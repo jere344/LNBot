@@ -1,6 +1,8 @@
 from discord.ext import commands
 import json
 import config
+from importlib.resources import path
+import pathlib
 
 
 def save_json(location, content) -> None:
@@ -19,3 +21,6 @@ class Client(commands.Bot):
 bot = Client(command_prefix=config.command_prefix, help_command=None)
 
 dict_of_help_command = {}
+
+main_path = pathlib.Path(__file__).parent
+novel_path = pathlib.Path(config.novel_folder_path)

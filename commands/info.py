@@ -5,7 +5,6 @@ from messages import *
 from lnbotdecorator import LnBotDecorator
 import json
 import discord
-import os
 
 
 @lib.bot.command()
@@ -29,14 +28,21 @@ async def info(ctx, *novel):
 
     user_readable_name, real_name, source, *_ = selected
 
-    with open(f"novels/{source} - {real_name}/metadata.json", "r") as file:
-        metadata = json.loads(file.read())
+    try:
+        with open(
+            lib.novel_path / f"{source} - {real_name}" / "metadata.json", "r"
+        ) as file:
+            metadata = json.loads(file.read())
+    except FileNotFoundError:
+        await misc.send(ctx, NovelNotDownloaded(), arguments)
+        return
 
-    # Find cover path
-    for file in os.listdir(f"novels/{source} - {real_name}"):
-        if file[:5] == "cover":
+    # We don't know the extension of the file
+    for file in lib.novel_path / f"{source} - {real_name}":
+        if file.stem == "cover":
             break
-    await ctx.send(file=discord.File(f"novels/{source} - {real_name}/{file}"))
+
+    await ctx.send(file=discord.File(lib.novel_path / f"{source} - {real_name}" / file))
 
     await ctx.send(
         f"""

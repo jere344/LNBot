@@ -233,3 +233,11 @@ class NovelFounds(BaseMessage):
         self.ES = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} encontrado{'' if nmb_of_novels == 1 else 's'} :\n```\n{novel_list_message}\n```"
         self.DE = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} gefunden{'' if nmb_of_novels == 1 else 's'} :\n```\n{novel_list_message}\n```"
         self.IT = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} trovato{'' if nmb_of_novels == 1 else 'i'} :\n```\n{novel_list_message}\n```"
+
+
+class NovelNotDownloaded(BaseMessage):
+    EN = "Novel not downloaded."
+    FR = "Novel non téléchargé."
+    ES = "Novel no descargado."
+    DE = "Novel nicht heruntergeladen."
+    IT = "Novel non scaricato."

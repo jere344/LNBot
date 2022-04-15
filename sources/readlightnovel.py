@@ -4,6 +4,7 @@ import os
 import json
 import ebookgenerators
 from messages import *
+import lib
 
 lang = ["EN"]
 source = "https://www.readlightnovel.me/"
@@ -43,9 +44,10 @@ async def update(message, soup, metadata, novel, latest_release):
         download_chapter(novel, nmb, chapter)
 
     metadata["latest"] = latest_release
-
     with open(
-        f"novels/readlightnovel - {novel}/metadata.json", "w", encoding="utf-8"
+        lib.novel_path / f"readlightnovel - {novel}" / "metadata.json",
+        "w",
+        encoding="utf-8",
     ) as file:
         json.dump(metadata, file)
 
@@ -53,7 +55,7 @@ async def update(message, soup, metadata, novel, latest_release):
 
 
 async def DownloadNovel(message, title, novel):
-    download_path = f"novels/readlightnovel - {novel}"
+    download_path = lib.novel_path / f"readlightnovel - {novel}"
 
     url = f"https://www.readlightnovel.me/{novel}"
     response = requests.get(url)
@@ -61,10 +63,11 @@ async def DownloadNovel(message, title, novel):
 
     latest_release = latest(soup)
 
+    metadata_path = download_path / "metadata.json"
     if os.path.isdir(download_path):
         await message.edit(content=AldreadyDownloaded())
 
-        with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
+        with open(metadata_path, "r", encoding="utf-8") as file:
             metadata = json.loads(file.read())
 
         if latest_release != metadata["latest"]:
@@ -73,7 +76,7 @@ async def DownloadNovel(message, title, novel):
 
         return
 
-    os.mkdir(download_path)
+    download_path.mkdir()
 
     metadata = {}
 
@@ -91,13 +94,14 @@ async def DownloadNovel(message, title, novel):
     await message.edit(content=CoverDownloaded())
     await message.edit(content=MetadataDownloaded())
 
-    os.mkdir(f"{download_path}/chapters")
+    (download_path / "chapters").mkdir()
+
     number_of_chapter = len(metadata["chapterlist"])
     for i, (nmb, chapter) in enumerate(metadata["chapterlist"].items()):
         download_chapter(novel, nmb, chapter)
         await message.edit(content=ChapterDownloaded(i, number_of_chapter))
 
-    with open(f"{download_path}/metadata.json", "w", encoding="utf-8") as file:
+    with open(metadata_path, "w", encoding="utf-8") as file:
         json.dump(metadata, file)
 
 
@@ -137,7 +141,11 @@ def cover(soup, novel):
     cover_url = soup.find("div", class_="novel-cover").find("img")["src"]
     cover_data = requests.get(cover_url, allow_redirects=True)
     cover_format = cover_url.split(".")[-1]
-    with open(f"novels/readlightnovel - {novel}/cover.{cover_format}", "wb") as file:
+
+    with open(
+        lib.novel_path / f"readlightnovel - {novel}" / f"cover.{cover_format}",
+        "wb",
+    ) as file:
         file.write(cover_data.content)
 
 
@@ -173,6 +181,8 @@ def download_chapter(novel, nmb, chapter_info):
         text = f"# {title}\n\n{text}"
 
     with open(
-        f"novels/readlightnovel - {novel}/chapters/{nmb}.txt", "w", encoding="utf-8"
+        lib.novel_path / f"readlightnovel - {novel}" / "chapters" / f"{nmb}.txt",
+        "w",
+        encoding="utf-8",
     ) as file:
         file.write(text)
