@@ -2,7 +2,6 @@ from ebooklib import epub
 import os
 import os.path
 import json
-import discord
 
 
 def Generate(novel_real_name, file_path, source):
@@ -38,11 +37,9 @@ def Generate(novel_real_name, file_path, source):
                 break
             title_line += 1
 
-        before_title = "<br><br>".join(chapter_text[:title_line]).replace("\n", "<br>")
+        before_title = "<br><br>".join(chapter_text[:title_line])
         title = chapter_text[title_line].replace("# ", "")
-        after_title = "<br><br>".join(chapter_text[title_line + 1 :]).replace(
-            "\n", "<br>"
-        )
+        after_title = "<br><br>".join(chapter_text[title_line + 1 :])
 
         chapter = epub.EpubHtml(
             title=title.replace("# ", "").strip(),
@@ -50,7 +47,8 @@ def Generate(novel_real_name, file_path, source):
             lang="en",
         )
 
-        chapter.content = f"""<p>
+        chapter.content = (
+            f"""<p>
                 {before_title}
             </p>
             <h1>
@@ -58,7 +56,13 @@ def Generate(novel_real_name, file_path, source):
             </h1>
             <p>
                 {after_title}
-            </p>"""
+            </p>""".replace(
+                "<<", "&lt;&lt;"
+            )
+            .replace(">>", "&gt;&gt;")
+            .replace("\n", "<br>")
+            .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+        )
 
         book.add_item(chapter)
         spine.append(chapter)
