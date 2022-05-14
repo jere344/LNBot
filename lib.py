@@ -19,3 +19,11 @@ class Client(commands.Bot):
 bot = Client(command_prefix=config.command_prefix, help_command=None)
 
 dict_of_help_command = {}
+
+
+class Novel:
+    def __init__(self, title, real_name, source, lang):
+        self.title = title
+        self.real_name = real_name
+        self.source = source
+        self.lang = lang

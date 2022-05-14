@@ -9,7 +9,7 @@ if config.sharing_small == "local" or config.sharing_large == "local":
 
 async def SendEbook(ctx, real_name, user_readable_name, source, ebook_type):
     filename = f"{ebookgenerators.GetEbookFileName(user_readable_name)}{ebookgenerators.extensions[ebook_type]}"
-    file_path = f"novels/{source} - {real_name}/{filename}"
+    file_path = f"novels/{source}/{real_name}/{filename}"
 
     if not os.path.isfile(file_path):
         ebookgenerators.ebook_generators[ebook_type].Generate(

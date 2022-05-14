@@ -12,4 +12,4 @@ threading.Thread(target=main).start()
 
 
 def get_url(novel, filename, source):
-    return f"http://{config.host}:{config.port}/download/{quote(source + ' - ' + novel)}/{quote(filename)}"
+    return f"http://{config.host}:{config.port}/download/{quote(source)}/{quote(novel)}/{quote(filename)}"

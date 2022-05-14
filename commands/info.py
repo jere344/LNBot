@@ -29,14 +29,14 @@ async def info(ctx, *novel):
 
     user_readable_name, real_name, source, *_ = selected
 
-    with open(f"novels/{source} - {real_name}/metadata.json", "r") as file:
+    with open(f"novels/{source}/{real_name}/metadata.json", "r") as file:
         metadata = json.loads(file.read())
 
     # Find cover path
-    for file in os.listdir(f"novels/{source} - {real_name}"):
+    for file in os.listdir(f"novels/{source}/{real_name}"):
         if file[:5] == "cover":
             break
-    await ctx.send(file=discord.File(f"novels/{source} - {real_name}/{file}"))
+    await ctx.send(file=discord.File(f"novels/{source}/{real_name}/{file}"))
 
     await ctx.send(
         f"""

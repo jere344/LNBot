@@ -7,6 +7,7 @@ import json
 import os
 from messages import *
 import glob
+from lib import Novel
 
 lang = ["EN"]
 source = "https://www.lightnovelworld.com/"
@@ -31,7 +32,7 @@ for line in raw_header.split("\n"):
         headers[key] = value.strip()
 
 
-def Search(novel):
+def Search(novel) -> list[Novel]:
 
     response = requests.post(
         "https://www.lightnovelworld.com/lnsearchlive",
@@ -44,7 +45,7 @@ def Search(novel):
     novels_found = []
     for li in soup.find_all("li"):
         a = li.find("a")
-        novels_found.append((a["title"], a["href"][7:], "lightnovelworld", "EN"))
+        novels_found.append(Novel(a["title"], a["href"][7:], "lightnovelworld", "EN"))
         # [7:] remove the /novel/
 
     return novels_found
@@ -52,7 +53,7 @@ def Search(novel):
 
 async def Update(message, novel, latest_availible):
     await message.edit(content=UpdateDetected())
-    download_path = f"novels/lightnovelworld - {novel}"
+    download_path = f"novels/lightnovelworld/{novel}"
 
     with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
@@ -89,7 +90,7 @@ async def Update(message, novel, latest_availible):
 def handle_novel_name_change(novel: str):
     """lightnovelworld change the number at the end of the url at every release.
     Fhis function will search if the novel name in url has been updated and if so will rename the folder to the new one"""
-    if os.path.isdir(f"novels/lightnovelworld - {novel}"):
+    if os.path.isdir(f"novels/lightnovelworld/{novel}"):
         return
 
     splited_novel = novel.split("-")
@@ -99,15 +100,15 @@ def handle_novel_name_change(novel: str):
         novel_without_number = "-".join(splited_novel)
 
     downloaded_with_same_name = glob.glob(
-        f"novels/lightnovelworld - {novel_without_number}*"
+        f"novels/lightnovelworld/{novel_without_number}*"
     )
 
     if downloaded_with_same_name:
-        os.rename(downloaded_with_same_name[0], f"novels/lightnovelworld - {novel}")
+        os.rename(downloaded_with_same_name[0], f"novels/lightnovelworld/{novel}")
 
 
 async def DownloadNovel(message, novel_title, novel):
-    download_path = f"novels/lightnovelworld - {novel}"
+    download_path = f"novels/lightnovelworld/{novel}"
 
     handle_novel_name_change(novel)
 

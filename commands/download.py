@@ -28,16 +28,20 @@ async def download(ctx, *novel):
     if not selected:
         return
 
-    user_readable_name, real_name, source, *_ = selected
+    message = await misc.send(ctx, DownloadingNovel(selected.title), arguments)
+    await sources.DownloadNovel(
+        message, selected.title, selected.real_name, selected.source
+    )
 
-    message = await misc.send(ctx, DownloadingNovel(user_readable_name), arguments)
-    await sources.DownloadNovel(message, user_readable_name, real_name, source)
-
-    await misc.edit(message, NovelDownloaded(user_readable_name), arguments)
+    await misc.edit(message, NovelDownloaded(selected.title), arguments)
 
     if arguments["epub"]:
         await misc.edit(message, SendingEbook("epub"), arguments)
-        await filesharing.SendEbook(ctx, real_name, user_readable_name, source, "epub")
+        await filesharing.SendEbook(
+            ctx, selected.real_name, selected.title, selected.source, "epub"
+        )
     if arguments["raw"]:
         await misc.edit(message, SendingEbook("raw"), arguments)
-        await filesharing.SendEbook(ctx, real_name, user_readable_name, source, "raw")
+        await filesharing.SendEbook(
+            ctx, selected.real_name, selected.title, selected.source, "raw"
+        )

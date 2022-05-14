@@ -4,6 +4,7 @@ import os
 import json
 import ebookgenerators
 from messages import *
+from lib import Novel
 
 lang = ["EN"]
 source = "https://www.readlightnovel.me/"
@@ -11,7 +12,7 @@ source = "https://www.readlightnovel.me/"
 header = {"X-Requested-With": "XMLHttpRequest"}
 
 
-def Search(novel):
+def Search(novel) -> list[Novel]:
     response = requests.post(
         "https://www.readlightnovel.me/search/autocomplete",
         {"q": novel},
@@ -19,16 +20,17 @@ def Search(novel):
     )
 
     soup = BeautifulSoup(response.text, features="lxml")
-    novel_founds = {}
-    novel_founds = [
-        (
-            li.find("span", class_="title").text,
-            li.find("a")["href"].split("/")[-1],
-            "readlightnovel",
-            "EN",
+    novel_founds = []
+    for li in soup.find_all("li"):
+        novel_founds.append(
+            Novel(
+                li.find("span", class_="title").text,
+                li.find("a")["href"].split("/")[-1],
+                "readlightnovel",
+                "EN",
+            ),
         )
-        for li in soup.findAll("li")
-    ]
+
     return novel_founds
 
 
@@ -45,7 +47,7 @@ async def update(message, soup, metadata, novel, latest_release):
     metadata["latest"] = latest_release
 
     with open(
-        f"novels/readlightnovel - {novel}/metadata.json", "w", encoding="utf-8"
+        f"novels/readlightnovel/{novel}/metadata.json", "w", encoding="utf-8"
     ) as file:
         json.dump(metadata, file)
 
@@ -53,7 +55,7 @@ async def update(message, soup, metadata, novel, latest_release):
 
 
 async def DownloadNovel(message, title, novel):
-    download_path = f"novels/readlightnovel - {novel}"
+    download_path = f"novels/readlightnovel/{novel}"
 
     url = f"https://www.readlightnovel.me/{novel}"
     response = requests.get(url)
@@ -137,7 +139,7 @@ def cover(soup, novel):
     cover_url = soup.find("div", class_="novel-cover").find("img")["src"]
     cover_data = requests.get(cover_url, allow_redirects=True)
     cover_format = cover_url.split(".")[-1]
-    with open(f"novels/readlightnovel - {novel}/cover.{cover_format}", "wb") as file:
+    with open(f"novels/readlightnovel/{novel}/cover.{cover_format}", "wb") as file:
         file.write(cover_data.content)
 
 
@@ -173,6 +175,6 @@ def download_chapter(novel, nmb, chapter_info):
         text = f"# {title}\n\n{text}"
 
     with open(
-        f"novels/readlightnovel - {novel}/chapters/{nmb}.txt", "w", encoding="utf-8"
+        f"novels/readlightnovel/{novel}/chapters/{nmb}.txt", "w", encoding="utf-8"
     ) as file:
         file.write(text)

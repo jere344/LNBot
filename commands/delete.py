@@ -32,7 +32,7 @@ async def delete(ctx, password: str, *novel):
 
     _, real_name, source, _ = await misc.ask_which(ctx, novels_found)
     try:
-        shutil.rmtree(f"novels/{source} - {real_name}")
+        shutil.rmtree(f"novels/{source}/{real_name}")
     except FileNotFoundError:
         await ctx.send("Novel not downloaded")
         return

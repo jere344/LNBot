@@ -2,7 +2,7 @@ import discord.ext.commands.context as Context
 import discord
 import lib
 from asyncio.exceptions import TimeoutError
-
+from lib import Novel
 from messages import NovelFounds
 
 
@@ -21,12 +21,12 @@ reaction_list = [
 ]
 
 
-async def ask_which(ctx: Context, novels_found: tuple):
+async def ask_which(ctx: Context, novels_found: list[Novel]) -> Novel:
 
     # Ask user which novel to download : list all novel founds and place reactions
     novel_list_message = "\n".join(
-        f"{reaction_list[i]} : [{language}][{source}] {title}"
-        for i, (title, novel, source, language) in enumerate(novels_found)
+        f"{reaction_list[i]} : [{novel.lang}][{novel.source}] {novel.title}"
+        for i, novel in enumerate(novels_found)
     )
     message = await ctx.send(NovelFounds(len(novels_found), novel_list_message))
     for i in range(len(novels_found)):

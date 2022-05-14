@@ -1,5 +1,5 @@
 language = "EN"  # FR / EN / DE / ES / IT
-command_prefix = "."  # Any
+command_prefix = "%"  # Any
 
 # These are the default argument passed when executing download
 verbose = v = True  # Download status messages on discord
