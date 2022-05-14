@@ -10,6 +10,8 @@ def main():
 
 threading.Thread(target=main).start()
 
+from lib import Novel
 
-def get_url(novel, filename, source):
-    return f"http://{config.host}:{config.port}/download/{quote(source)}/{quote(novel)}/{quote(filename)}"
+
+def get_url(filename, novel: Novel):
+    return f"http://{config.host}:{config.port}/download/{quote(novel.source)}/{quote(novel.real_name)}/{quote(filename)}"

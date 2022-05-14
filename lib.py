@@ -22,6 +22,8 @@ dict_of_help_command = {}
 
 
 class Novel:
+    ebook_path = {}
+
     def __init__(self, title, real_name, source, lang):
         self.title = title
         self.real_name = real_name
