@@ -29,9 +29,7 @@ async def download(ctx, *novel):
         return
 
     message = await misc.send(ctx, DownloadingNovel(selected.title), arguments)
-    await sources.DownloadNovel(
-        message, selected.title, selected.real_name, selected.source
-    )
+    await sources.DownloadNovel(message, selected)
 
     await misc.edit(message, NovelDownloaded(selected.title), arguments)
 

@@ -51,9 +51,9 @@ def Search(novel) -> list[Novel]:
     return novels_found
 
 
-async def Update(message, novel, latest_availible):
+async def Update(message, novel: Novel, latest_availible):
     await message.edit(content=UpdateDetected())
-    download_path = f"novels/lightnovelworld/{novel}"
+    download_path = f"novels/lightnovelworld/{novel.real_name}"
 
     with open(f"{download_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
@@ -84,16 +84,16 @@ async def Update(message, novel, latest_availible):
 
     await message.edit(content=ChapterlistDownloaded())
 
-    ebookgenerators.DeleteEbook(novel, metadata["title"], "lightnovelworld")
+    ebookgenerators.DeleteEbook(novel)
 
 
-def handle_novel_name_change(novel: str):
+def handle_novel_name_change(novel: Novel):
     """lightnovelworld change the number at the end of the url at every release.
     Fhis function will search if the novel name in url has been updated and if so will rename the folder to the new one"""
-    if os.path.isdir(f"novels/lightnovelworld/{novel}"):
+    if os.path.isdir(f"novels/lightnovelworld/{novel.real_name}"):
         return
 
-    splited_novel = novel.split("-")
+    splited_novel = novel.real_name.split("-")
     if splited_novel[-1].isnumeric():
         novel_without_number = "-".join(splited_novel[:-1])
     else:
@@ -104,11 +104,13 @@ def handle_novel_name_change(novel: str):
     )
 
     if downloaded_with_same_name:
-        os.rename(downloaded_with_same_name[0], f"novels/lightnovelworld/{novel}")
+        os.rename(
+            downloaded_with_same_name[0], f"novels/lightnovelworld/{novel.real_name}"
+        )
 
 
-async def DownloadNovel(message, novel_title, novel):
-    download_path = f"novels/lightnovelworld/{novel}"
+async def DownloadNovel(message, novel: Novel):
+    download_path = f"novels/lightnovelworld/{novel.real_name}"
 
     handle_novel_name_change(novel)
 
@@ -131,7 +133,7 @@ async def DownloadNovel(message, novel_title, novel):
     metadata["source"] = "lightnovelworld"
     metadata["language"] = "EN"
     metadata["latest"] = latest_availible
-    metadata["title"] = novel_title
+    metadata["title"] = novel.title
 
     metadata["summary"] = ScrapSummary(novel)
     await message.edit(content=SummaryDownloaded())
@@ -161,16 +163,16 @@ async def DownloadNovel(message, novel_title, novel):
         await message.edit(content=ChapterDownloaded(chapter_id, number_of_chapter))
 
 
-def Latest(novel: str, proxies={}):
-    url = "https://www.lightnovelworld.com/novel/" + novel
+def Latest(novel: Novel, proxies={}):
+    url = Url(novel)
     source = requests.get(url, headers=headers).text
     return BeautifulSoup(source, "lxml").find("p", class_="latest text1row").text
 
 
-def ScrapPic(novel: str, proxies={}) -> tuple:
+def ScrapPic(novel: Novel, proxies={}) -> tuple:
     """return (picture_data, format of the picture)"""
 
-    url = "https://www.lightnovelworld.com/novel/" + novel
+    url = Url(novel)
     # Cloudscraper avoid lightnovelworld cloudflare protection
     # Equivalent to request
     source = requests.get(url, headers=headers).text
@@ -227,10 +229,10 @@ def ScrapChapter(info_chapter: str, proxies={}) -> str:
     return text
 
 
-def ScrapSummary(novel: str, proxies={}) -> str:
+def ScrapSummary(novel: Novel, proxies={}) -> str:
     """return the summary"""
 
-    url = "https://www.lightnovelworld.com/novel/" + novel
+    url = Url(novel)
     source = requests.get(url, headers=headers).text
     soup = BeautifulSoup(source, "lxml").find("div", class_="content")
 
@@ -284,7 +286,7 @@ def ScrapOnePageOfChapter(url, proxies={}):
     return i, ch
 
 
-def ScrapChapterList(novel: str, from_page=1, proxies={}) -> dict:
+def ScrapChapterList(novel: Novel, from_page=1, proxies={}) -> dict:
     """return a dict of :
     "ID  : (chapter, title, url)"
     ID is for sorting, only int, begin at 1
@@ -292,7 +294,9 @@ def ScrapChapterList(novel: str, from_page=1, proxies={}) -> dict:
     It's better if the title can contain the true title, but if not possible just put f"Chapter {chapter}"
     url will be use to download the chapter so must point directly to it"""
 
-    fixed_url = f"https://www.lightnovelworld.com/novel/{novel}/Chapters/page-"
+    fixed_url = (
+        f"https://www.lightnovelworld.com/novel/{novel.real_name}/Chapters/page-"
+    )
 
     ch = {}
     page = from_page
@@ -312,5 +316,5 @@ def ScrapChapterList(novel: str, from_page=1, proxies={}) -> dict:
     return ch
 
 
-def Url(novel):
-    return "https://www.lightnovelworld.com/novel/" + novel
+def Url(novel: Novel):
+    return "https://www.lightnovelworld.com/novel/" + novel.real_name

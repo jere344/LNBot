@@ -12,10 +12,10 @@ source = "https://www.readlightnovel.me/"
 header = {"X-Requested-With": "XMLHttpRequest"}
 
 
-def Search(novel) -> list[Novel]:
+def Search(search_terms) -> list[Novel]:
     response = requests.post(
         "https://www.readlightnovel.me/search/autocomplete",
-        {"q": novel},
+        {"q": search_terms},
         headers=header,
     )
 
@@ -34,7 +34,7 @@ def Search(novel) -> list[Novel]:
     return novel_founds
 
 
-async def update(message, soup, metadata, novel, latest_release):
+async def update(message, soup, metadata, novel: Novel, latest_release):
     new_chapterlist = chapterlist(soup).items()
     nmb_chapter = len(new_chapterlist)
 
@@ -47,17 +47,17 @@ async def update(message, soup, metadata, novel, latest_release):
     metadata["latest"] = latest_release
 
     with open(
-        f"novels/readlightnovel/{novel}/metadata.json", "w", encoding="utf-8"
+        f"novels/readlightnovel/{novel.real_name}/metadata.json", "w", encoding="utf-8"
     ) as file:
         json.dump(metadata, file)
 
-    ebookgenerators.DeleteEbook(novel, metadata["title"], "readlightnovel")
+    ebookgenerators.DeleteEbook(novel)
 
 
-async def DownloadNovel(message, title, novel):
-    download_path = f"novels/readlightnovel/{novel}"
+async def DownloadNovel(message, novel: Novel):
+    download_path = f"novels/readlightnovel/{novel.real_name}"
 
-    url = f"https://www.readlightnovel.me/{novel}"
+    url = f"https://www.readlightnovel.me/{novel.real_name}"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
 
@@ -81,7 +81,7 @@ async def DownloadNovel(message, title, novel):
 
     metadata["source"] = "readlightnovel"
     metadata["language"] = "EN"
-    metadata["title"] = title
+    metadata["title"] = novel.title
     metadata["url"] = url
     metadata["summary"] = summary(soup)
     await message.edit(content=SummaryDownloaded())
@@ -135,11 +135,13 @@ def summary(soup):
     )
 
 
-def cover(soup, novel):
+def cover(soup, novel: Novel):
     cover_url = soup.find("div", class_="novel-cover").find("img")["src"]
     cover_data = requests.get(cover_url, allow_redirects=True)
     cover_format = cover_url.split(".")[-1]
-    with open(f"novels/readlightnovel/{novel}/cover.{cover_format}", "wb") as file:
+    with open(
+        f"novels/readlightnovel/{novel.real_name}/cover.{cover_format}", "wb"
+    ) as file:
         file.write(cover_data.content)
 
 
@@ -150,7 +152,7 @@ def is_ads(tag):
     return False
 
 
-def download_chapter(novel, nmb, chapter_info):
+def download_chapter(novel: Novel, nmb, chapter_info):
     _, title, url = chapter_info
 
     response = requests.get(url)
@@ -175,6 +177,8 @@ def download_chapter(novel, nmb, chapter_info):
         text = f"# {title}\n\n{text}"
 
     with open(
-        f"novels/readlightnovel/{novel}/chapters/{nmb}.txt", "w", encoding="utf-8"
+        f"novels/readlightnovel/{novel.real_name}/chapters/{nmb}.txt",
+        "w",
+        encoding="utf-8",
     ) as file:
         file.write(text)

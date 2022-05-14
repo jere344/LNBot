@@ -10,9 +10,9 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route("/download/<foldername>/<filename>")
-def download(foldername, filename):
+@app.route("/download/<source>/<foldername>/<filename>")
+def download(foldername, source, filename):
     # pathlib.Path().resolve() is the working directory
     return send_from_directory(
-        pathlib.Path().resolve() / "novels" / foldername, filename
+        pathlib.Path().resolve() / "novels" / source / foldername, filename
     )

@@ -16,15 +16,16 @@ import sources.readlightnovel as readlightnovel
 
 # import sources.local as local
 
+from lib import Novel
 
 sources = [lightnovelworld, readlightnovel]
 
 
-async def DownloadNovel(message, title, novel, source):
-    if source == "lightnovelworld":
-        await lightnovelworld.DownloadNovel(message, title, novel)
-    elif source == "readlightnovel":
-        await readlightnovel.DownloadNovel(message, title, novel)
+async def DownloadNovel(message, novel: Novel):
+    if novel.source == "lightnovelworld":
+        await lightnovelworld.DownloadNovel(message, novel)
+    elif novel.source == "readlightnovel":
+        await readlightnovel.DownloadNovel(message, novel)
     else:
         print("unknown source")
 
