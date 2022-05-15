@@ -1,6 +1,8 @@
 from flask import Flask
-from flask import send_from_directory
+from flask import send_file
 import pathlib
+import config
+from urllib.parse import unquote
 
 app = Flask(__name__)
 
@@ -10,9 +12,19 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
-@app.route("/download/<source>/<foldername>/<filename>")
-def download(foldername, source, filename):
-    # pathlib.Path().resolve() is the working directory
-    return send_from_directory(
-        pathlib.Path().resolve() / "novels" / source / foldername, filename
-    )
+@app.route("/download/<path>")
+def download(path):
+    path = pathlib.Path(unquote(path))
+    if not path.exists():
+        return "<p>File not found</p>"
+    if path.is_dir():
+        return "<p>Directory not supported</p>"
+
+    for library in config.libraries.values():
+        if pathlib.Path(library) in path.parents:
+            return send_file(path)
+
+    if (pathlib.Path().resolve() / "novels") in path.parents:
+        return send_file(path)
+
+    return "<p>Permission denied</p>"

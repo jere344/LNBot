@@ -25,13 +25,14 @@ async def download(ctx, *novel):
     if not selected:
         return
 
+    message = await misc.send(ctx, DownloadingNovel(selected.title), arguments)
+
     if selected.source == "local":
         extension = selected.ebook_path.suffix[1:]
         await misc.edit(message, SendingEbook(extension), arguments)
-        await filesharing.SendEbook(ctx, selected, extension)
+        await filesharing.SendEbook(ctx, selected)
         return
 
-    message = await misc.send(ctx, DownloadingNovel(selected.title), arguments)
     await sources.DownloadNovel(message, selected)
 
     await misc.edit(message, NovelDownloaded(selected.title), arguments)

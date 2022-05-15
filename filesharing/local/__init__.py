@@ -1,6 +1,7 @@
 import threading
 from filesharing.local.flaskapp import app
 import config
+import pathlib
 from urllib.parse import quote
 
 
@@ -13,5 +14,6 @@ threading.Thread(target=main).start()
 from lib import Novel
 
 
-def get_url(filename, novel: Novel):
-    return f"http://{config.host}:{config.port}/download/{quote(novel.source)}/{quote(novel.real_name)}/{quote(filename)}"
+def get_url(novel: Novel):
+
+    return f"http://{config.host}:{config.port}/download/{quote(str(novel.ebook_path))}"

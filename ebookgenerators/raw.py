@@ -3,10 +3,10 @@ import os
 from lib import Novel
 
 
-def Generate(file_path, novel: Novel):
+def Generate(novel: Novel):
     # shutil.make_archive(file_path[:-4], "zip", f"novels/{source}/{novel_real_name}/c")
     # # [:-4] to avoid .zip.zip
-    zf = zipfile.ZipFile(file_path, "w")
+    zf = zipfile.ZipFile(novel.ebook_path, "w")
 
     novel_root_path = f"novels/{novel.source}/{novel.real_name}"
     for file in os.listdir(f"{novel_root_path}/chapters"):

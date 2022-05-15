@@ -5,7 +5,7 @@ import json
 from lib import Novel
 
 
-def Generate(file_path, novel: Novel):
+def Generate(novel: Novel):
     novel_path = f"novels/{novel.source}/{novel.real_name}"
     with open(f"{novel_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())
@@ -84,7 +84,7 @@ def Generate(file_path, novel: Novel):
     book.add_item(css)
     book.spine = spine
     epub.write_epub(
-        file_path,
+        novel.ebook_path,
         book,
         {"epub3_pages": False},
     )

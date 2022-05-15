@@ -54,8 +54,9 @@ async def ask_which(ctx: Context, novels_found: list[Novel]) -> Novel:
             message = await ctx.send(
                 NovelFounds(len(novels_found), novel_list_message, page)
             )
-            await message.add_reaction("◀️")
-            await message.add_reaction("▶️")
+            if len(novels_found) > nmb_of_novel_per_page:
+                await message.add_reaction("◀️")
+                await message.add_reaction("▶️")
             for i in range(len(novels_found[start:stop])):
                 await message.add_reaction(reaction_list[i])
         else:

@@ -13,12 +13,12 @@
 
 import sources.lightnovelworld as lightnovelworld
 import sources.readlightnovel as readlightnovel
+import sources.local as local
 
-# import sources.local as local
 
 from lib import Novel
 
-sources = [lightnovelworld, readlightnovel]
+sources = [local, lightnovelworld, readlightnovel]
 
 
 async def DownloadNovel(message, novel: Novel):
