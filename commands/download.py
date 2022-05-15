@@ -20,9 +20,6 @@ async def download(ctx, *novel):
     if not novels_found:
         await misc.send(ctx, NoNovelFound(), arguments)
         return
-    if len(novels_found) > len(misc.reaction_list):
-        await misc.send(ctx, TooManyFound(), arguments)
-        return
 
     selected = await misc.ask_which(ctx, novels_found)
     if not selected:

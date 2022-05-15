@@ -22,31 +22,79 @@ reaction_list = [
 
 
 async def ask_which(ctx: Context, novels_found: list[Novel]) -> Novel:
-
-    # Ask user which novel to download : list all novel founds and place reactions
-    novel_list_message = "\n".join(
-        f"{reaction_list[i]} : [{novel.lang}][{novel.source}] {novel.title}"
-        for i, novel in enumerate(novels_found)
-    )
-    message = await ctx.send(NovelFounds(len(novels_found), novel_list_message))
-    for i in range(len(novels_found)):
-        await message.add_reaction(reaction_list[i])
-
-    # Check for reaction
     def check(reaction, user):
         return (
             user == ctx.author
-            and str(reaction.emoji) in reaction_list[: i + 1]
+            and str(reaction.emoji) in valid_reaction_response
             and reaction.message == message
         )
 
-    try:
-        reaction: discord.reaction.Reaction
-        reaction, *_ = await lib.bot.wait_for("reaction_add", timeout=60.0, check=check)
-    except TimeoutError:
-        return
+    nmb_of_novel_per_page = len(reaction_list)
 
-    return novels_found[reaction_list.index(reaction.emoji)]
+    start = 0
+    stop = min(nmb_of_novel_per_page, len(novels_found))
+
+    message = None
+    nmb_pages = (len(novels_found) - 1) // nmb_of_novel_per_page + 1
+
+    while True:
+        valid_reaction_response = []
+        novel_list_message = "\n".join(
+            f"{reaction_list[i]} : [{novel.lang}][{novel.source}] {novel.title}"
+            for i, novel in enumerate(novels_found[start:stop])
+        )
+
+        page = (
+            f"{start // nmb_of_novel_per_page + 1}/{nmb_pages}"
+            if len(novels_found) > nmb_of_novel_per_page
+            else None
+        )
+
+        if not message:
+            message = await ctx.send(
+                NovelFounds(len(novels_found), novel_list_message, page)
+            )
+            await message.add_reaction("◀️")
+            await message.add_reaction("▶️")
+            for i in range(len(novels_found[start:stop])):
+                await message.add_reaction(reaction_list[i])
+        else:
+            await message.edit(
+                content=NovelFounds(len(novels_found), novel_list_message, page)
+            )
+
+        # Ask user which novel to download : list all novel founds and place reactions
+        novel_list_message = "\n".join(
+            f"{reaction_list[i]} : [{novel.lang}][{novel.source}] {novel.title}"
+            for i, novel in enumerate(novels_found[start:stop])
+        )
+
+        if start > 0:
+            valid_reaction_response.append("◀️")
+        if len(novels_found) - 1 > stop:
+            valid_reaction_response.append("▶️")
+        for i in range(len(novels_found[start:stop])):
+            valid_reaction_response.append(reaction_list[i])
+        # Check for reaction
+
+        try:
+            reaction: discord.reaction.Reaction
+            reaction, *_ = await lib.bot.wait_for(
+                "reaction_add", timeout=60.0, check=check
+            )
+        except TimeoutError:
+            return
+
+        if str(reaction.emoji) == "◀️":
+            start -= nmb_of_novel_per_page
+            stop -= nmb_of_novel_per_page
+
+        elif str(reaction.emoji) == "▶️":
+            start += nmb_of_novel_per_page
+            stop += nmb_of_novel_per_page
+
+        else:
+            return novels_found[start + reaction_list.index(reaction.emoji)]
 
 
 class placeholderMessage:

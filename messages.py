@@ -227,9 +227,10 @@ class CommandDontExist(BaseMessage):
 
 
 class NovelFounds(BaseMessage):
-    def __init__(self, nmb_of_novels, novel_list_message):
-        self.EN = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} found :\n```\n{novel_list_message}\n```"
-        self.FR = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} trouvé{'' if nmb_of_novels == 1 else 's'} :\n```\n{novel_list_message}\n```"
-        self.ES = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} encontrado{'' if nmb_of_novels == 1 else 's'} :\n```\n{novel_list_message}\n```"
-        self.DE = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} gefunden{'' if nmb_of_novels == 1 else 's'} :\n```\n{novel_list_message}\n```"
-        self.IT = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} trovato{'' if nmb_of_novels == 1 else 'i'} :\n```\n{novel_list_message}\n```"
+    def __init__(self, nmb_of_novels, novel_list_message, page=None):
+        bslashn = "\n"
+        self.EN = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} found :\n{f'Page {page}{bslashn}' if page is not None else ''}```\n{novel_list_message}\n```"
+        self.FR = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} trouvé :\n{f'Page {page}{bslashn}' if page is not None else ''}```\n{novel_list_message}\n```"
+        self.ES = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} encontrado :\n{f'Página {page}{bslashn}' if page is not None else ''}```\n{novel_list_message}\n```"
+        self.DE = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} gefunden :\n{f'Seite {page}{bslashn}' if page is not None else ''}```\n{novel_list_message}\n```"
+        self.IT = f"{nmb_of_novels} novel{'' if nmb_of_novels == 1 else 's'} trovati :\n{f'Pagina {page}{bslashn}' if page is not None else ''}```\n{novel_list_message}\n```"
