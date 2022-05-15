@@ -1,6 +1,7 @@
 from discord.ext import commands
 import json
 import config
+import pathlib
 
 
 def save_json(location, content) -> None:
@@ -22,7 +23,7 @@ dict_of_help_command = {}
 
 
 class Novel:
-    ebook_path = {}
+    ebook_path: pathlib.Path()
 
     def __init__(self, title, real_name, source, lang):
         self.title = title

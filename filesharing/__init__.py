@@ -8,12 +8,9 @@ if config.sharing_small == "local" or config.sharing_large == "local":
     import filesharing.local
 
 
-async def SendEbook(ctx, novel: Novel, ebook_type):
+async def SendEbook(ctx, novel: Novel, ebook_type: str) -> None:
     if novel.source == "local":
-        if not ebook_type in novel.ebook_path:
-            await ctx.send(f"No {ebook_type} found for {novel.title}")
-            return
-        file_path = novel.ebook_path[ebook_type]
+        file_path = novel.ebook_path
         filename = os.path.basename(file_path)
 
     else:

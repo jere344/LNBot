@@ -23,3 +23,7 @@ sharing_large = "local"  # For file larger than 8mb
 # You will need to use port forwarding for it to work outside your network
 host = "127.0.0.1"
 port = "5000"
+
+
+# Local source config
+libraries = {"EN": "D:\ebooks\English", "FR": "D:\ebooks\French"}  # {language : path}

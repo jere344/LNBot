@@ -1,18 +1,27 @@
-from messages import *
+# from messages import *
+from pathlib import Path
+from lib import Novel
+import config
 
+# from lib import Novel
 
 lang = ["all"]
 source = "local"
 
 
-def Search(novel):
-
+def Search(search_query):
     novels_found = []
 
-    #     novels_found.append((a["title"], a["href"][7:], "lightnovelworld", "EN"))
+    match = "*" + search_query.replace(" ", "*") + "*"
+    i = 0
+    for lang, path in config.libraries.items():
+        for file in Path(path).rglob(match):
+            novel = Novel(file.stem, file.name, "local", lang)
+            novel.ebook_path = file
+            novels_found.append(novel)
+            i += 1
 
-    # return novels_found
+            if i > 20:
+                break
 
-
-async def DownloadNovel(message, novel_title, novel):
-    pass
+    return novels_found
