@@ -14,7 +14,7 @@ source = "all"  # only sources with this word in url
 # Sharing methods
 # discord : send directly via discord, 8mb max for non-nitro users
 # local : send via local server, won't use network when sending links, but will use it when downloading for each person
-sharing_small = "local"  # "discord"  # For files smaller than 8mb
+sharing_small = "discord"  # For files smaller than 8mb
 sharing_large = "local"  # For file larger than 8mb
 
 
