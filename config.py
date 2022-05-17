@@ -1,5 +1,5 @@
 language = "EN"  # FR / EN / DE / ES / IT
-command_prefix = "%"  # Any
+command_prefix = "."  # Any
 
 # These are the default argument passed when executing download
 verbose = v = True  # Download status messages on discord
@@ -26,4 +26,5 @@ port = "5000"
 
 
 # Local source config
-libraries = {"EN": "D:\ebooks\English", "FR": "D:\ebooks\French"}  # {language : path}
+libraries = {}
+# {language : path} ex : {"EN": "D:\ebooks\English", "FR": "D:\ebooks\French"}

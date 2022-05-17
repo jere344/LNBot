@@ -11,8 +11,8 @@ def save_json(location, content) -> None:
 
 class Client(commands.Bot):
     async def on_message(self, message):
-        if message.author == self.user:
-            return
+        # if message.author == self.user:
+        #     return
 
         return await super().on_message(message)
 
