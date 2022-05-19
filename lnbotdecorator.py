@@ -4,6 +4,9 @@ import CommandHelp
 
 
 def LnBotDecorator(help_message=False, help_exemple=False, hidden=False):
+    """Main décoratr for LNBot.
+    Allow to easily log commands and add the commands in the help function"""
+
     def decorator(func):
         # This is called when a discord command is defined
         # Add function informations to generate the help function dynamically

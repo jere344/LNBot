@@ -8,8 +8,13 @@ import pathlib
 if config.sharing_small == "local" or config.sharing_large == "local":
     import filesharing.local
 
+    # importing filesharing.local start a new thread for flask th handle download request
+
 
 async def SendEbook(ctx, novel: Novel, ebook_type=None) -> None:
+    """Send the ebook the novel.
+    the local source do not have an ebook_type.
+    For this source the novel variable contain an ebook_path"""
     if novel.source != "local":
         filename = f"{ebookgenerators.GetEbookFileName(novel.title)}{ebookgenerators.extensions[ebook_type]}"
         novel.ebook_path = (

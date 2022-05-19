@@ -15,5 +15,5 @@ from lib import Novel
 
 
 def get_url(novel: Novel):
-
+    """Generate an url to download the novel using the local host method"""
     return f"http://{config.host}:{config.port}/download/{quote(str(novel.ebook_path))}"

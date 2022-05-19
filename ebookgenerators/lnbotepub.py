@@ -6,6 +6,7 @@ from lib import Novel
 
 
 def Generate(novel: Novel):
+    """Generate the epub for the file"""
     novel_path = f"novels/{novel.source}/{novel.real_name}"
     with open(f"{novel_path}/metadata.json", "r", encoding="utf-8") as file:
         metadata = json.loads(file.read())

@@ -12,6 +12,7 @@ import filesharing
     help_exemple="download lord of the mysteries",
 )
 async def download(ctx, *novel):
+    """Start the process to download a novel using the *novel query"""
     novel, arguments = misc.parse_novel_and_arguments(*novel)
 
     novels_found = sources.Search(novel, arguments)

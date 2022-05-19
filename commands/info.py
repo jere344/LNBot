@@ -11,6 +11,7 @@ import os
 @lib.bot.command()
 @LnBotDecorator(help_message="Download novel")
 async def info(ctx, *novel):
+    """Show the metadata for the selected novel. Do not support the local source yet"""
     novel, arguments = misc.parse_novel_and_arguments(*novel)
 
     novels_found = sources.Search(novel, arguments)

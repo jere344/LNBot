@@ -14,6 +14,7 @@ extensions = {
 
 
 def GetEbookFileName(title):
+    """Remove illegal character of windows and linux path from title to decide the file name"""
     illegal = """\/:*?"<>|"""
     for char in illegal:
         title.replace(char, " ")

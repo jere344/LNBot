@@ -4,6 +4,7 @@ from lib import Novel
 
 
 def Generate(novel: Novel):
+    """Send a zipped archive to the metadata and content of the chapter"""
     # shutil.make_archive(file_path[:-4], "zip", f"novels/{source}/{novel_real_name}/c")
     # # [:-4] to avoid .zip.zip
     zf = zipfile.ZipFile(novel.ebook_path, "w")

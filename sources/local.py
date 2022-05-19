@@ -10,6 +10,8 @@ source = "local"
 
 
 def Search(search_query):
+    """Fetch the list of novel matching search_query.
+    Is sensitive to the order of words, to lower/uppercase and any special character"""
     novels_found = []
 
     match = "*" + search_query.replace(" ", "*") + "*"

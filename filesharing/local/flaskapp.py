@@ -14,6 +14,9 @@ def hello_world():
 
 @app.route("/download/<path>")
 def download(path):
+    """Handle the download request.
+    Url are generated using local.__init__.get_url() but can also be created by hand.
+    """
     path = pathlib.Path(unquote(path))
     if not path.exists():
         return "<p>File not found</p>"

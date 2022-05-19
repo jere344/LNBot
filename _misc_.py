@@ -22,6 +22,9 @@ reaction_list = [
 
 
 async def ask_which(ctx: Context, novels_found: list[Novel]) -> Novel:
+    """Ask the user which novel he want to download.
+    Called after fetching the list of novel matching a querry (novels_founds)."""
+
     def check(reaction, user):
         return (
             user == ctx.author

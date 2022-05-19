@@ -10,6 +10,7 @@ import glob
 @lib.bot.command()
 @LnBotDecorator()
 async def delete(ctx, password: str, *novel):
+    """Delete the selected novel. Not updated yet to support the local source"""
     if not novel:
         return
 

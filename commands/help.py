@@ -7,6 +7,7 @@ from messages import CommandDontExist
 @lib.bot.command()
 @LnBotDecorator(help_exemple="help ping")
 async def help(ctx, commande=None):
+    """display the availibles command for the person executing it. some commands are hidden."""
     if commande:
         if commande not in lib.dict_of_help_command:
             ctx.send(CommandDontExist())
