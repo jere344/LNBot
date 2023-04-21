@@ -1,4 +1,10 @@
-I am a beginner developper and it was made in a few days more as a learning project than an actual usable program. 
+[THIS REPO IS OUTDATED] 
+
+Check out [lightnovel crawler](https://github.com/dipu-bd/lightnovel-crawler) for a discord bot instead, or my website using the same technology : http://lncrawler.monster/
+
+---
+
+It was made in a few days more as a learning project than an actual usable program. 
 I do not guarantee the stability or security of this program.
 It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel-crawler/ instead.
 
