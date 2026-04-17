@@ -21,7 +21,6 @@ It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel
 
 ## Table of Contents
 
-- [Try it now](#try-it-now)
 - [Use](#user)
 - [Installation](#installation)
 - [Requirements](#Requirements)
@@ -36,12 +35,6 @@ It is still usable but I advise you to use https://github.com/dipu-bd/lightnovel
 - Totally open sources
 - Add your own commands simply by creating a .py file in the commands folder following "ping.py"as an exemple
 - Upload file using discord or self hosted with flask server (google drive coming soon)
-
-
-## Try it now
-
-You can try the bot right now using [this invitation](https://discord.com/oauth2/authorize?client_id=949308611924987914&scope=bot&permissions=35904) and start downloading novels. But this is hosted on my raspberrypi on my crappy adsl connection, so don't expect good performance or stability.
-
 
 
 ## Use
